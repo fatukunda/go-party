@@ -8,8 +8,6 @@ var _asyncToGenerator2 = _interopRequireDefault(require("@babel/runtime/helpers/
 
 var _bcrypt = _interopRequireDefault(require("bcrypt"));
 
-var _jsonwebtoken = _interopRequireDefault(require("jsonwebtoken"));
-
 /* eslint-disable no-undef */
 module.exports = function (sequelize, DataTypes) {
   var User = sequelize.define('User', {
@@ -141,6 +139,10 @@ module.exports = function (sequelize, DataTypes) {
     },
     avatar: {
       type: DataTypes.STRING
+    },
+    is_active: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: false
     }
   }, {});
 

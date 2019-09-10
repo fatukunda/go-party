@@ -1,6 +1,5 @@
 /* eslint-disable no-undef */
 import bcrypt from 'bcrypt'
-import jwt from 'jsonwebtoken'
 
 module.exports = (sequelize, DataTypes) => {
     const User = sequelize.define(
@@ -67,6 +66,10 @@ module.exports = (sequelize, DataTypes) => {
             avatar: {
                 type: DataTypes.STRING,
             },
+            is_active: {
+                type: DataTypes.BOOLEAN,
+                defaultValue: false
+            }
         },
         {}
     )
