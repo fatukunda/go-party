@@ -19,11 +19,13 @@ var _auth = _interopRequireDefault(require("../middleware/auth"));
 
 var addUser = _UserController["default"].addUser,
     uploadAvatar = _UserController["default"].uploadAvatar,
-    findByCredentials = _UserController["default"].findByCredentials;
+    findByCredentials = _UserController["default"].findByCredentials,
+    verifyAccount = _UserController["default"].verifyAccount;
 var router = (0, _express.Router)();
 router.post('/', addUser);
+router.get('/confirmation/:token', verifyAccount);
 router.put('/avatar', _auth["default"], _multer.multerUploads, _cloudinaryConfig.cloudinaryConfig, uploadAvatar);
-router.post('/login', _auth["default"], findByCredentials);
+router.post('/login', findByCredentials);
 var _default = router;
 exports["default"] = _default;
 //# sourceMappingURL=UserRoutes.js.map

@@ -63,18 +63,60 @@ function () {
       return addUser;
     }()
   }, {
-    key: "uploadAvatar",
+    key: "verifyAccount",
     value: function () {
-      var _uploadAvatar = (0, _asyncToGenerator2["default"])(
+      var _verifyAccount = (0, _asyncToGenerator2["default"])(
       /*#__PURE__*/
-      _regenerator["default"].mark(function _callee2(userId, avatar) {
-        var user;
+      _regenerator["default"].mark(function _callee2(id) {
         return _regenerator["default"].wrap(function _callee2$(_context2) {
           while (1) {
             switch (_context2.prev = _context2.next) {
               case 0:
                 _context2.prev = 0;
                 _context2.next = 3;
+                return _models["default"].User.update({
+                  is_active: true
+                }, {
+                  where: {
+                    id: id
+                  }
+                });
+
+              case 3:
+                return _context2.abrupt("return", _context2.sent);
+
+              case 6:
+                _context2.prev = 6;
+                _context2.t0 = _context2["catch"](0);
+                throw _context2.t0;
+
+              case 9:
+              case "end":
+                return _context2.stop();
+            }
+          }
+        }, _callee2, null, [[0, 6]]);
+      }));
+
+      function verifyAccount(_x2) {
+        return _verifyAccount.apply(this, arguments);
+      }
+
+      return verifyAccount;
+    }()
+  }, {
+    key: "uploadAvatar",
+    value: function () {
+      var _uploadAvatar = (0, _asyncToGenerator2["default"])(
+      /*#__PURE__*/
+      _regenerator["default"].mark(function _callee3(userId, avatar) {
+        var user;
+        return _regenerator["default"].wrap(function _callee3$(_context3) {
+          while (1) {
+            switch (_context3.prev = _context3.next) {
+              case 0:
+                _context3.prev = 0;
+                _context3.next = 3;
                 return _models["default"].User.update({
                   avatar: avatar
                 }, {
@@ -85,23 +127,23 @@ function () {
                 });
 
               case 3:
-                user = _context2.sent;
-                return _context2.abrupt("return", user[1][0]);
+                user = _context3.sent;
+                return _context3.abrupt("return", user[1][0]);
 
               case 7:
-                _context2.prev = 7;
-                _context2.t0 = _context2["catch"](0);
-                throw _context2.t0;
+                _context3.prev = 7;
+                _context3.t0 = _context3["catch"](0);
+                throw _context3.t0;
 
               case 10:
               case "end":
-                return _context2.stop();
+                return _context3.stop();
             }
           }
-        }, _callee2, null, [[0, 7]]);
+        }, _callee3, null, [[0, 7]]);
       }));
 
-      function uploadAvatar(_x2, _x3) {
+      function uploadAvatar(_x3, _x4) {
         return _uploadAvatar.apply(this, arguments);
       }
 
@@ -112,14 +154,14 @@ function () {
     value: function () {
       var _findByCredentials = (0, _asyncToGenerator2["default"])(
       /*#__PURE__*/
-      _regenerator["default"].mark(function _callee3(username, password) {
+      _regenerator["default"].mark(function _callee4(username, password) {
         var user, isPasswordMatch;
-        return _regenerator["default"].wrap(function _callee3$(_context3) {
+        return _regenerator["default"].wrap(function _callee4$(_context4) {
           while (1) {
-            switch (_context3.prev = _context3.next) {
+            switch (_context4.prev = _context4.next) {
               case 0:
-                _context3.prev = 0;
-                _context3.next = 3;
+                _context4.prev = 0;
+                _context4.next = 3;
                 return _models["default"].User.findOne({
                   where: {
                     username: username
@@ -127,46 +169,54 @@ function () {
                 });
 
               case 3:
-                user = _context3.sent;
+                user = _context4.sent;
 
                 if (user) {
-                  _context3.next = 6;
+                  _context4.next = 6;
                   break;
                 }
 
                 throw new Error('Invalid login credentials');
 
               case 6:
-                _context3.next = 8;
+                _context4.next = 8;
                 return _bcrypt["default"].compare(password, user.password);
 
               case 8:
-                isPasswordMatch = _context3.sent;
+                isPasswordMatch = _context4.sent;
 
                 if (isPasswordMatch) {
-                  _context3.next = 11;
+                  _context4.next = 11;
                   break;
                 }
 
                 throw new Error('Invalid login credentials');
 
               case 11:
-                return _context3.abrupt("return", user);
+                if (user.is_active) {
+                  _context4.next = 13;
+                  break;
+                }
 
-              case 14:
-                _context3.prev = 14;
-                _context3.t0 = _context3["catch"](0);
-                throw _context3.t0;
+                throw new Error('Please verify your account.');
 
-              case 17:
+              case 13:
+                return _context4.abrupt("return", user);
+
+              case 16:
+                _context4.prev = 16;
+                _context4.t0 = _context4["catch"](0);
+                throw _context4.t0;
+
+              case 19:
               case "end":
-                return _context3.stop();
+                return _context4.stop();
             }
           }
-        }, _callee3, null, [[0, 14]]);
+        }, _callee4, null, [[0, 16]]);
       }));
 
-      function findByCredentials(_x4, _x5) {
+      function findByCredentials(_x5, _x6) {
         return _findByCredentials.apply(this, arguments);
       }
 

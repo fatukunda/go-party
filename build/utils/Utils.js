@@ -63,7 +63,9 @@ function () {
     value: function generateAuthToken(userId) {
       return _jsonwebtoken["default"].sign({
         id: userId
-      }, process.env.JWT_KEY);
+      }, process.env.JWT_KEY, {
+        expiresIn: '1h'
+      });
     }
   }]);
   return Util;

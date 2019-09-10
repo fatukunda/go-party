@@ -38,6 +38,6 @@ export default class Util {
     }
 
     generateAuthToken(userId) {
-        return jwt.sign({ id: userId }, process.env.JWT_KEY)
+        return jwt.sign({ id: userId }, process.env.JWT_KEY, { expiresIn: '1h'})
     }
 }
