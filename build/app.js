@@ -15,7 +15,14 @@ var _cors = _interopRequireDefault(require("cors"));
 
 var _dotenv = _interopRequireDefault(require("dotenv"));
 
+var _expressSession = _interopRequireDefault(require("express-session"));
+
+var _passport = _interopRequireDefault(require("passport"));
+
 var _UserRoutes = _interopRequireDefault(require("./routes/UserRoutes"));
+
+// eslint-disable-next-line no-undef
+require('./middleware/facebookAuth')(_passport["default"]);
 
 _dotenv["default"].config();
 
@@ -24,7 +31,24 @@ app.use((0, _cors["default"])());
 app.use(_bodyParser["default"].json());
 app.use(_bodyParser["default"].urlencoded({
   extended: false
+})); // eslint-disable-next-line no-undef
+
+app.use((0, _expressSession["default"])({
+  secret: process.env.SESSION_SECRET,
+  saveUninitialized: true,
+  resave: true
 }));
+app.use(_passport["default"].initialize());
+app.use(_passport["default"].session());
+
+_passport["default"].serializeUser(function (user, done) {
+  done(null, user);
+});
+
+_passport["default"].deserializeUser(function (user, done) {
+  done(null, user);
+});
+
 app.use('/api/v1/users', _UserRoutes["default"]);
 var _default = app;
 exports["default"] = _default;

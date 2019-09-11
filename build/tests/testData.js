@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.invalidUser = exports.validUser = void 0;
+exports.invalidDataUser = exports.invalidUser = exports.validUser = void 0;
 var validUser = {
   username: 'testUser',
   password: 'testPassword',
@@ -15,4 +15,10 @@ var invalidUser = {
   password: 'testPass'
 };
 exports.invalidUser = invalidUser;
+var invalidDataUser = {
+  username: 12345,
+  password: 'testPassword',
+  email: 'app.com'
+};
+exports.invalidDataUser = invalidDataUser;
 //# sourceMappingURL=testData.js.map

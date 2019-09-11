@@ -149,64 +149,43 @@ module.exports = function (sequelize, DataTypes) {
   User.associate = function (models) {// associations can be defined here
   };
 
-  User.prototype.findByCredentials =
+  User.beforeCreate(
   /*#__PURE__*/
   function () {
     var _ref = (0, _asyncToGenerator2["default"])(
     /*#__PURE__*/
-    _regenerator["default"].mark(function _callee3(username, password) {
-      var user, isPasswordMatch;
+    _regenerator["default"].mark(function _callee3(user) {
       return _regenerator["default"].wrap(function _callee3$(_context3) {
         while (1) {
           switch (_context3.prev = _context3.next) {
             case 0:
-              _context3.next = 2;
-              return User.findOne({
-                username: username
-              });
+              _context3.prev = 0;
+              _context3.next = 3;
+              return _bcrypt["default"].hash(user.password, 8);
 
-            case 2:
-              user = _context3.sent;
+            case 3:
+              user.password = _context3.sent;
+              _context3.next = 9;
+              break;
 
-              if (user) {
-                _context3.next = 5;
-                break;
-              }
+            case 6:
+              _context3.prev = 6;
+              _context3.t0 = _context3["catch"](0);
+              throw new Error('Something went wrong');
 
-              throw new Error('Invalid login credentials');
-
-            case 5:
-              _context3.next = 7;
-              return _bcrypt["default"].compare(password, user.password);
-
-            case 7:
-              isPasswordMatch = _context3.sent;
-
-              if (isPasswordMatch) {
-                _context3.next = 10;
-                break;
-              }
-
-              throw new Error('Invalid login credentials');
-
-            case 10:
-              return _context3.abrupt("return", user);
-
-            case 11:
+            case 9:
             case "end":
               return _context3.stop();
           }
         }
-      }, _callee3);
+      }, _callee3, null, [[0, 6]]);
     }));
 
-    return function (_x3, _x4) {
+    return function (_x3) {
       return _ref.apply(this, arguments);
     };
-  }(); // Hash the user password before saving it.
-
-
-  User.beforeCreate(
+  }());
+  User.beforeUpdate(
   /*#__PURE__*/
   function () {
     var _ref2 = (0, _asyncToGenerator2["default"])(
@@ -217,28 +196,36 @@ module.exports = function (sequelize, DataTypes) {
           switch (_context4.prev = _context4.next) {
             case 0:
               _context4.prev = 0;
-              _context4.next = 3;
-              return _bcrypt["default"].hash(user.password, 8);
 
-            case 3:
+              if (!user.password) {
+                _context4.next = 5;
+                break;
+              }
+
+              _context4.next = 4;
+              return _bcrypt["default"].hash(user.dataValues.password, 8);
+
+            case 4:
               user.password = _context4.sent;
-              _context4.next = 9;
+
+            case 5:
+              _context4.next = 10;
               break;
 
-            case 6:
-              _context4.prev = 6;
+            case 7:
+              _context4.prev = 7;
               _context4.t0 = _context4["catch"](0);
-              throw new Error('Something went wrong');
+              throw new Error('Could not update the password');
 
-            case 9:
+            case 10:
             case "end":
               return _context4.stop();
           }
         }
-      }, _callee4, null, [[0, 6]]);
+      }, _callee4, null, [[0, 7]]);
     }));
 
-    return function (_x5) {
+    return function (_x4) {
       return _ref2.apply(this, arguments);
     };
   }());

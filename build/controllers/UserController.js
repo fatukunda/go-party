@@ -248,6 +248,130 @@ function () {
 
       return findByCredentials;
     }()
+  }, {
+    key: "fetchUserProfile",
+    value: function () {
+      var _fetchUserProfile = (0, _asyncToGenerator2["default"])(
+      /*#__PURE__*/
+      _regenerator["default"].mark(function _callee5(req, res) {
+        var user;
+        return _regenerator["default"].wrap(function _callee5$(_context5) {
+          while (1) {
+            switch (_context5.prev = _context5.next) {
+              case 0:
+                user = req.user;
+                user.password = undefined;
+                util.setSuccess(200, 'success', user);
+                return _context5.abrupt("return", util.send(res));
+
+              case 4:
+              case "end":
+                return _context5.stop();
+            }
+          }
+        }, _callee5);
+      }));
+
+      function fetchUserProfile(_x9, _x10) {
+        return _fetchUserProfile.apply(this, arguments);
+      }
+
+      return fetchUserProfile;
+    }()
+  }, {
+    key: "editUserProfile",
+    value: function () {
+      var _editUserProfile = (0, _asyncToGenerator2["default"])(
+      /*#__PURE__*/
+      _regenerator["default"].mark(function _callee6(req, res) {
+        var acceptedOptions, receivedOptions, user, isUpdateOption;
+        return _regenerator["default"].wrap(function _callee6$(_context6) {
+          while (1) {
+            switch (_context6.prev = _context6.next) {
+              case 0:
+                // Update user profile
+                acceptedOptions = ['username', 'email', 'password', 'bio', 'dob'];
+                receivedOptions = Object.keys(req.body);
+                user = req.user;
+                isUpdateOption = receivedOptions.every(function (option) {
+                  return acceptedOptions.includes(option);
+                });
+
+                if (isUpdateOption) {
+                  _context6.next = 7;
+                  break;
+                }
+
+                util.setError(400, 'Invalid update options!');
+                return _context6.abrupt("return", util.send(res));
+
+              case 7:
+                _context6.prev = 7;
+                receivedOptions.forEach(function (option) {
+                  return user[option] = req.body[option];
+                });
+                _context6.next = 11;
+                return user.save();
+
+              case 11:
+                user.password = undefined;
+                util.setSuccess(200, 'User updated successfully', user);
+                return _context6.abrupt("return", util.send(res));
+
+              case 16:
+                _context6.prev = 16;
+                _context6.t0 = _context6["catch"](7);
+                util.setError(400, _context6.t0.message);
+                return _context6.abrupt("return", util.send(res));
+
+              case 20:
+              case "end":
+                return _context6.stop();
+            }
+          }
+        }, _callee6, null, [[7, 16]]);
+      }));
+
+      function editUserProfile(_x11, _x12) {
+        return _editUserProfile.apply(this, arguments);
+      }
+
+      return editUserProfile;
+    }()
+  }, {
+    key: "loginFacebookUser",
+    value: function () {
+      var _loginFacebookUser = (0, _asyncToGenerator2["default"])(
+      /*#__PURE__*/
+      _regenerator["default"].mark(function _callee7(req, res) {
+        var user;
+        return _regenerator["default"].wrap(function _callee7$(_context7) {
+          while (1) {
+            switch (_context7.prev = _context7.next) {
+              case 0:
+                try {
+                  user = req.user;
+                  util.setSuccess(200, 'Facebook login successful!', user);
+                  util.send(res);
+                } catch (error) {
+                  util.setError(400, error);
+                  util.send(res);
+                }
+
+              case 1:
+              case "end":
+                return _context7.stop();
+            }
+          }
+        }, _callee7);
+      }));
+
+      function loginFacebookUser(_x13, _x14) {
+        return _loginFacebookUser.apply(this, arguments);
+      }
+
+      return loginFacebookUser;
+    }()
   }]);
   return UserController;
 }();
