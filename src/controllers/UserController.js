@@ -84,6 +84,28 @@ class UserController {
         util.setSuccess(200, 'success', user)
         return util.send(res)
     }
+
+    static async editUserProfile(req, res) {
+        // Update user profile
+        const acceptedOptions = ['username', 'email', 'password', 'bio', 'dob']
+        const receivedOptions = Object.keys(req.body)
+        const user = req.user
+        const isUpdateOption = receivedOptions.every(option => acceptedOptions.includes(option))
+        if (!isUpdateOption) {
+            util.setError(400, 'Invalid update options!')
+            return util.send(res)
+        }
+        try {
+            receivedOptions.forEach(option => (user[option] = req.body[option]))
+            await user.save()
+            user.password = undefined
+            util.setSuccess(200, 'User updated successfully', user)
+            return util.send(res)
+        } catch (error) {
+            util.setError(400, error.message)
+            return util.send(res)
+        }
+    }
 }
 
 export default UserController
