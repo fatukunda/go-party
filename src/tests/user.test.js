@@ -111,4 +111,17 @@ describe('Testing the user endpoints:', () => {
                 done()
             })
     })
+
+    it('should fetch current user profile', done => {
+        const token = jwt.sign({ id: 1 }, process.env.JWT_KEY, { expiresIn: '1h' })
+        chai
+            .request(app)
+            .get(`${usersUrl}/me`)
+            .set('Authorization', `Bearer ${token}`)
+            .end((err, res) => {
+                expect(res.status).to.equal(200)
+                expect(res.body.message).to.equal('success')
+                done()
+            })
+    })
 })

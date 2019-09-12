@@ -77,6 +77,13 @@ class UserController {
             return util.send(res)
         }
     }
+
+    static async fetchUserProfile(req, res) {
+        const { user } = req
+        user.password = undefined
+        util.setSuccess(200, 'success', user)
+        return util.send(res)
+    }
 }
 
 export default UserController
