@@ -9,4 +9,10 @@ const invalidUser = {
     password: 'testPass',
 }
 
-export { validUser, invalidUser }
+const invalidDataUser = {
+    username: 12345,
+    password: 'testPassword',
+    email: 'app.com',
+}
+
+export { validUser, invalidUser, invalidDataUser }

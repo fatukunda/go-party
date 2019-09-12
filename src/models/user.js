@@ -68,32 +68,29 @@ module.exports = (sequelize, DataTypes) => {
             },
             is_active: {
                 type: DataTypes.BOOLEAN,
-                defaultValue: false
-            }
+                defaultValue: false,
+            },
         },
         {}
     )
     User.associate = function(models) {
         // associations can be defined here
     }
-    User.prototype.findByCredentials = async (username, password) => {
-        const user = await User.findOne({ username })
-        if (!user) {
-            throw new Error('Invalid login credentials')
-        }
-        const isPasswordMatch = await bcrypt.compare(password, user.password)
-        if (!isPasswordMatch) {
-            throw new Error('Invalid login credentials')
-        }
-        return user
-    }
-
-    // Hash the user password before saving it.
     User.beforeCreate(async user => {
         try {
             user.password = await bcrypt.hash(user.password, 8)
         } catch (error) {
             throw new Error('Something went wrong')
+        }
+    })
+
+    User.beforeUpdate(async user => {
+        try {
+            if (user.password) {
+                user.password = await bcrypt.hash(user.dataValues.password, 8)
+            }
+        } catch (error) {
+            throw new Error('Could not update the password')
         }
     })
 
