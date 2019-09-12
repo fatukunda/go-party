@@ -4,17 +4,17 @@
 require('dotenv').config();
 
 var development = {
-  database: 'party-timeDB',
-  username: 'postgres',
-  password: 'makanda2000',
-  host: 'localhost',
+  database: process.env.DB_NAME,
+  username: process.env.DB_USER,
+  password: process.env.DB_PASS,
+  host: process.env.DB_HOST,
   dialect: 'postgres'
 };
 var test = {
-  database: 'party_time_testdb',
-  username: 'postgres',
-  password: 'makanda2000',
-  host: 'localhost',
+  database: process.env.TEST_DB_NAME,
+  username: process.env.DB_USER,
+  password: process.env.DB_PASS,
+  host: process.env.DB_HOST,
   dialect: 'postgres'
 };
 var production = {

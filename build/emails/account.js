@@ -10,7 +10,7 @@ exports.sendActivationEmail = void 0;
 var _mail = _interopRequireDefault(require("@sendgrid/mail"));
 
 // eslint-disable-next-line no-undef
-_mail["default"].setApiKey(process.env.SENDGRID_API_KKEY);
+_mail["default"].setApiKey(process.env.SENDGRID_API_KEY);
 
 var sendActivationEmail = function sendActivationEmail(email, username, activationLink) {
   _mail["default"].send({

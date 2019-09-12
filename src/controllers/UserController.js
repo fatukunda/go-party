@@ -106,6 +106,16 @@ class UserController {
             return util.send(res)
         }
     }
+    static async loginFacebookUser(req, res) {
+        try {
+            const user = req.user
+            util.setSuccess(200, 'Facebook login successful!', user)
+            util.send(res)
+        } catch (error) {
+            util.setError(400, error)
+            util.send(res)
+        }
+    }
 }
 
 export default UserController
