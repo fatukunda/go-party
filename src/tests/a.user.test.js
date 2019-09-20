@@ -44,7 +44,7 @@ describe('Testing the user endpoints:', () => {
             })
     })
 
-    it('Should throw an error is something wrong happens while creating a user', done => {
+    it('Should throw an error if something wrong happens while creating a user', done => {
         // In this test case, we are trying to create a user with an invalid email address.
         chai
             .request(app)
@@ -72,7 +72,7 @@ describe('Testing the user endpoints:', () => {
     })
 
     it('Should verify an account', done => {
-        const token = jwt.sign({ id: 1 }, process.env.JWT_KEY, { expiresIn: '1h' })
+        const token = jwt.sign({ id: validUser.id }, process.env.JWT_KEY, { expiresIn: '1h' })
         chai
             .request(app)
             .get(`${usersUrl}/confirmation/${token}`)
@@ -87,7 +87,7 @@ describe('Testing the user endpoints:', () => {
 
     it('Should throw an error if something happens while verifying an account', done => {
         // In this test case we are trying to use a wrong JWT_KEY than the one that was used to create the Token.
-        const token = jwt.sign({ id: 1 }, 'wrong_jwt_key', { expiresIn: '1h' })
+        const token = jwt.sign({ id: validUser.id }, 'wrong_jwt_key', { expiresIn: '1h' })
         chai
             .request(app)
             .get(`${usersUrl}/confirmation/${token}`)
@@ -163,7 +163,7 @@ describe('Testing the user endpoints:', () => {
                 done()
             })
     })
-    
+
     it('should not edit user with invalid attribute names', done => {
         const token = jwt.sign({ id: 1 }, process.env.JWT_KEY, { expiresIn: '1h' })
         const newUserDetails = {
