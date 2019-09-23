@@ -137,8 +137,30 @@ describe('Testing the party endpoints', function () {
       party_date: '02:10:2020'
     };
 
-    _chai["default"].request(_app["default"]) // Tring to pass an invalid data type of party id will throw a 400 error
+    _chai["default"].request(_app["default"]) // Trying to pass an invalid data type of party id will throw a 400 error
     .patch("".concat(partyUrl, "/invaliddata")).set('Authorization', "Bearer ".concat(token)).send(editData).end(function (err, res) {
+      expect(res.status).to.equal(400);
+      expect(res.body.status).to.equal('error');
+      done();
+    });
+  });
+  it('Should delete a party', function (done) {
+    _chai["default"].request(_app["default"])["delete"]("".concat(partyUrl, "/1")).set('Authorization', "Bearer ".concat(token)).send().end(function (err, res) {
+      expect(res.status).to.equal(200);
+      expect(res.body.message).to.equal('Party successfully deleted!');
+      done();
+    });
+  });
+  it('Should throw a 404 when a party to delete does not exist', function (done) {
+    _chai["default"].request(_app["default"])["delete"]("".concat(partyUrl, "/4")).set('Authorization', "Bearer ".concat(token)).send().end(function (err, res) {
+      expect(res.status).to.equal(404);
+      expect(res.body.message).to.equal('Attempting to delete a non-existing party.');
+      done();
+    });
+  });
+  it('Should throw 400 if something wrong happens while deleting a party', function (done) {
+    _chai["default"].request(_app["default"]) // Trying to pass an invalid data type of party id will throw a 400 error
+    ["delete"]("".concat(partyUrl, "/invaliddata")).set('Authorization', "Bearer ".concat(token)).send().end(function (err, res) {
       expect(res.status).to.equal(400);
       expect(res.body.status).to.equal('error');
       done();

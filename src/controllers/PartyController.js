@@ -68,7 +68,7 @@ class PartyController {
             return util.send(res)
         }
         try {
-            const party = await PartyService.findAndUpdateParty(party_id, user.id)
+            const party = await PartyService.findParty(party_id, user.id)
             if (!party) {
                 util.setError(404, 'Party not found')
                 return util.send(res)
@@ -76,6 +76,24 @@ class PartyController {
             receivedOptions.forEach(option => (party[option] = req.body[option]))
             await party.save()
             util.setSuccess(200, 'Party updated successfully', party)
+            return util.send(res)
+        } catch (error) {
+            util.setError(400, error.message)
+            return util.send(res)
+        }
+    }
+
+    static async deleteParty(req, res) {
+        const party_id = parseInt(req.params.party_id)
+        const user = req.user
+        try {
+            const party = await PartyService.findParty(party_id, user.id)
+            if (!party) {
+                util.setError(404, 'Attempting to delete a non-existing party.')
+                return util.send(res)
+            }
+            await party.destroy()
+            util.setSuccess(200, 'Party successfully deleted!')
             return util.send(res)
         } catch (error) {
             util.setError(400, error.message)
