@@ -64,7 +64,7 @@ class PartyService {
         }
     }
 
-    static async findAndUpdateParty(party_id, host_id) {
+    static async findParty(party_id, host_id) {
         try {
             return await database.Party.findOne({
                 where: {

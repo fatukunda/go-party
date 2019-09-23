@@ -216,7 +216,7 @@ function () {
               case 8:
                 _context4.prev = 8;
                 _context4.next = 11;
-                return _PartyService["default"].findAndUpdateParty(party_id, user.id);
+                return _PartyService["default"].findParty(party_id, user.id);
 
               case 11:
                 party = _context4.sent;
@@ -259,6 +259,62 @@ function () {
       }
 
       return editParty;
+    }()
+  }, {
+    key: "deleteParty",
+    value: function () {
+      var _deleteParty = (0, _asyncToGenerator2["default"])(
+      /*#__PURE__*/
+      _regenerator["default"].mark(function _callee5(req, res) {
+        var party_id, user, party;
+        return _regenerator["default"].wrap(function _callee5$(_context5) {
+          while (1) {
+            switch (_context5.prev = _context5.next) {
+              case 0:
+                party_id = parseInt(req.params.party_id);
+                user = req.user;
+                _context5.prev = 2;
+                _context5.next = 5;
+                return _PartyService["default"].findParty(party_id, user.id);
+
+              case 5:
+                party = _context5.sent;
+
+                if (party) {
+                  _context5.next = 9;
+                  break;
+                }
+
+                util.setError(404, 'Attempting to delete a non-existing party.');
+                return _context5.abrupt("return", util.send(res));
+
+              case 9:
+                _context5.next = 11;
+                return party.destroy();
+
+              case 11:
+                util.setSuccess(200, 'Party successfully deleted!');
+                return _context5.abrupt("return", util.send(res));
+
+              case 15:
+                _context5.prev = 15;
+                _context5.t0 = _context5["catch"](2);
+                util.setError(400, _context5.t0.message);
+                return _context5.abrupt("return", util.send(res));
+
+              case 19:
+              case "end":
+                return _context5.stop();
+            }
+          }
+        }, _callee5, null, [[2, 15]]);
+      }));
+
+      function deleteParty(_x9, _x10) {
+        return _deleteParty.apply(this, arguments);
+      }
+
+      return deleteParty;
     }()
   }]);
   return PartyController;

@@ -152,9 +152,9 @@ function () {
       return viewSingleParty;
     }()
   }, {
-    key: "findAndUpdateParty",
+    key: "findParty",
     value: function () {
-      var _findAndUpdateParty = (0, _asyncToGenerator2["default"])(
+      var _findParty = (0, _asyncToGenerator2["default"])(
       /*#__PURE__*/
       _regenerator["default"].mark(function _callee4(party_id, host_id) {
         return _regenerator["default"].wrap(function _callee4$(_context4) {
@@ -187,11 +187,11 @@ function () {
         }, _callee4, null, [[0, 6]]);
       }));
 
-      function findAndUpdateParty(_x6, _x7) {
-        return _findAndUpdateParty.apply(this, arguments);
+      function findParty(_x6, _x7) {
+        return _findParty.apply(this, arguments);
       }
 
-      return findAndUpdateParty;
+      return findParty;
     }()
   }]);
   return PartyService;

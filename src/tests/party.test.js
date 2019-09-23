@@ -181,10 +181,50 @@ describe('Testing the party endpoints', () => {
         }
         chai
             .request(app)
-        // Tring to pass an invalid data type of party id will throw a 400 error
+        // Trying to pass an invalid data type of party id will throw a 400 error
             .patch(`${partyUrl}/invaliddata`)
             .set('Authorization', `Bearer ${token}`)
             .send(editData)
+            .end((err, res) => {
+                expect(res.status).to.equal(400)
+                expect(res.body.status).to.equal('error')
+                done()
+            })
+    })
+
+    it('Should delete a party', done => {
+        chai
+            .request(app)
+            .delete(`${partyUrl}/1`)
+            .set('Authorization', `Bearer ${token}`)
+            .send()
+            .end((err, res) => {
+                expect(res.status).to.equal(200)
+                expect(res.body.message).to.equal('Party successfully deleted!')
+                done()
+            })
+    })
+
+    it('Should throw a 404 when a party to delete does not exist', done => {
+        chai
+            .request(app)
+            .delete(`${partyUrl}/4`)
+            .set('Authorization', `Bearer ${token}`)
+            .send()
+            .end((err, res) => {
+                expect(res.status).to.equal(404)
+                expect(res.body.message).to.equal('Attempting to delete a non-existing party.')
+                done()
+            })
+    })
+
+    it('Should throw 400 if something wrong happens while deleting a party', done => {
+        chai
+            .request(app)
+        // Trying to pass an invalid data type of party id will throw a 400 error
+            .delete(`${partyUrl}/invaliddata`)
+            .set('Authorization', `Bearer ${token}`)
+            .send()
             .end((err, res) => {
                 expect(res.status).to.equal(400)
                 expect(res.body.status).to.equal('error')
