@@ -185,6 +185,81 @@ function () {
 
       return viewSingleParty;
     }()
+  }, {
+    key: "editParty",
+    value: function () {
+      var _editParty = (0, _asyncToGenerator2["default"])(
+      /*#__PURE__*/
+      _regenerator["default"].mark(function _callee4(req, res) {
+        var acceptedOptions, receivedOptions, user, party_id, isUpdateOption, party;
+        return _regenerator["default"].wrap(function _callee4$(_context4) {
+          while (1) {
+            switch (_context4.prev = _context4.next) {
+              case 0:
+                // Update party
+                acceptedOptions = ['title', 'location', 'description', 'party_date', 'is_free'];
+                receivedOptions = Object.keys(req.body);
+                user = req.user;
+                party_id = parseInt(req.params.party_id);
+                isUpdateOption = receivedOptions.every(function (option) {
+                  return acceptedOptions.includes(option);
+                });
+
+                if (isUpdateOption) {
+                  _context4.next = 8;
+                  break;
+                }
+
+                util.setError(400, 'Invalid update options!');
+                return _context4.abrupt("return", util.send(res));
+
+              case 8:
+                _context4.prev = 8;
+                _context4.next = 11;
+                return _PartyService["default"].findAndUpdateParty(party_id, user.id);
+
+              case 11:
+                party = _context4.sent;
+
+                if (party) {
+                  _context4.next = 15;
+                  break;
+                }
+
+                util.setError(404, 'Party not found');
+                return _context4.abrupt("return", util.send(res));
+
+              case 15:
+                receivedOptions.forEach(function (option) {
+                  return party[option] = req.body[option];
+                });
+                _context4.next = 18;
+                return party.save();
+
+              case 18:
+                util.setSuccess(200, 'Party updated successfully', party);
+                return _context4.abrupt("return", util.send(res));
+
+              case 22:
+                _context4.prev = 22;
+                _context4.t0 = _context4["catch"](8);
+                util.setError(400, _context4.t0.message);
+                return _context4.abrupt("return", util.send(res));
+
+              case 26:
+              case "end":
+                return _context4.stop();
+            }
+          }
+        }, _callee4, null, [[8, 22]]);
+      }));
+
+      function editParty(_x7, _x8) {
+        return _editParty.apply(this, arguments);
+      }
+
+      return editParty;
+    }()
   }]);
   return PartyController;
 }();

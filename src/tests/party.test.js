@@ -112,4 +112,83 @@ describe('Testing the party endpoints', () => {
                 done()
             })
     })
+
+    it('Should edit a party', done => {
+        const editData = {
+            description: 'edited description',
+            title: 'edited title',
+            is_free: false,
+            party_date: '02:10:2020',
+        }
+        chai
+            .request(app)
+            .patch(`${partyUrl}/1`)
+            .set('Authorization', `Bearer ${token}`)
+            .send(editData)
+            .end((err, res) => {
+                expect(res.status).to.equal(200)
+                expect(res.body.data.title).to.equal('edited title')
+                done()
+            })
+    })
+
+    it('Should throw a 404 when a party to edit does not exist', done => {
+        const editData = {
+            description: 'edited description',
+            title: 'edited title',
+            is_free: false,
+            party_date: '02:10:2020',
+        }
+        chai
+            .request(app)
+            .patch(`${partyUrl}/4`)
+            .set('Authorization', `Bearer ${token}`)
+            .send(editData)
+            .end((err, res) => {
+                expect(res.status).to.equal(404)
+                expect(res.body.message).to.equal('Party not found')
+                done()
+            })
+    })
+
+    it('Should throw a 400 when an invalid update option is given', done => {
+        const editData = {
+            description: 'edited description',
+            title: 'edited title',
+            is_free: false,
+            party_date: '02:10:2020',
+            // address is an invalid update option. The app should therefore throw a 400 error.
+            address: 'invalid update option',
+        }
+        chai
+            .request(app)
+            .patch(`${partyUrl}/1`)
+            .set('Authorization', `Bearer ${token}`)
+            .send(editData)
+            .end((err, res) => {
+                expect(res.status).to.equal(400)
+                expect(res.body.message).to.equal('Invalid update options!')
+                done()
+            })
+    })
+
+    it('Should throw 400 if something wrong happens while updating a party', done => {
+        const editData = {
+            description: 'edited description',
+            title: 'edited title',
+            is_free: false,
+            party_date: '02:10:2020',
+        }
+        chai
+            .request(app)
+        // Tring to pass an invalid data type of party id will throw a 400 error
+            .patch(`${partyUrl}/invaliddata`)
+            .set('Authorization', `Bearer ${token}`)
+            .send(editData)
+            .end((err, res) => {
+                expect(res.status).to.equal(400)
+                expect(res.body.status).to.equal('error')
+                done()
+            })
+    })
 })

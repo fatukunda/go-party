@@ -85,5 +85,64 @@ describe('Testing the party endpoints', function () {
       done();
     });
   });
+  it('Should edit a party', function (done) {
+    var editData = {
+      description: 'edited description',
+      title: 'edited title',
+      is_free: false,
+      party_date: '02:10:2020'
+    };
+
+    _chai["default"].request(_app["default"]).patch("".concat(partyUrl, "/1")).set('Authorization', "Bearer ".concat(token)).send(editData).end(function (err, res) {
+      expect(res.status).to.equal(200);
+      expect(res.body.data.title).to.equal('edited title');
+      done();
+    });
+  });
+  it('Should throw a 404 when a party to edit does not exist', function (done) {
+    var editData = {
+      description: 'edited description',
+      title: 'edited title',
+      is_free: false,
+      party_date: '02:10:2020'
+    };
+
+    _chai["default"].request(_app["default"]).patch("".concat(partyUrl, "/4")).set('Authorization', "Bearer ".concat(token)).send(editData).end(function (err, res) {
+      expect(res.status).to.equal(404);
+      expect(res.body.message).to.equal('Party not found');
+      done();
+    });
+  });
+  it('Should throw a 400 when an invalid update option is given', function (done) {
+    var editData = {
+      description: 'edited description',
+      title: 'edited title',
+      is_free: false,
+      party_date: '02:10:2020',
+      // address is an invalid update option. The app should therefore throw a 400 error.
+      address: 'invalid update option'
+    };
+
+    _chai["default"].request(_app["default"]).patch("".concat(partyUrl, "/1")).set('Authorization', "Bearer ".concat(token)).send(editData).end(function (err, res) {
+      expect(res.status).to.equal(400);
+      expect(res.body.message).to.equal('Invalid update options!');
+      done();
+    });
+  });
+  it('Should throw 400 if something wrong happens while updating a party', function (done) {
+    var editData = {
+      description: 'edited description',
+      title: 'edited title',
+      is_free: false,
+      party_date: '02:10:2020'
+    };
+
+    _chai["default"].request(_app["default"]) // Tring to pass an invalid data type of party id will throw a 400 error
+    .patch("".concat(partyUrl, "/invaliddata")).set('Authorization', "Bearer ".concat(token)).send(editData).end(function (err, res) {
+      expect(res.status).to.equal(400);
+      expect(res.body.status).to.equal('error');
+      done();
+    });
+  });
 });
 //# sourceMappingURL=party.test.js.map
