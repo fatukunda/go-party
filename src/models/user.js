@@ -73,8 +73,8 @@ module.exports = (sequelize, DataTypes) => {
         },
         {}
     )
-    User.associate = function(models) {
-        // associations can be defined here
+    User.associate = ({ Party }) => {
+        User.belongsToMany(Party, { as: 'attended_parties', through: 'party_guests', foreignKey: 'guest_id' })
     }
     User.beforeCreate(async user => {
         try {
@@ -93,6 +93,5 @@ module.exports = (sequelize, DataTypes) => {
             throw new Error('Could not update the password')
         }
     })
-
     return User
 }

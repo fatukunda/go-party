@@ -23,6 +23,7 @@ var _UserRoutes = _interopRequireDefault(require("./routes/UserRoutes"));
 
 // eslint-disable-next-line no-undef
 require('./middleware/facebookAuth')(_passport["default"]);
+var _PartyRoutes = _interopRequireDefault(require("./routes/PartyRoutes"));
 
 _dotenv["default"].config();
 
@@ -50,6 +51,7 @@ _passport["default"].deserializeUser(function (user, done) {
 });
 
 app.use('/api/v1/users', _UserRoutes["default"]);
+app.use('/api/v1/parties', _PartyRoutes["default"]);
 var _default = app;
 exports["default"] = _default;
 //# sourceMappingURL=app.js.map

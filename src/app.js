@@ -7,6 +7,7 @@ import passport from 'passport'
 import userRoutes from './routes/UserRoutes'
 // eslint-disable-next-line no-undef
 require('./middleware/facebookAuth')(passport)
+import partyRoutes from './routes/PartyRoutes'
 
 config.config()
 
@@ -29,5 +30,6 @@ passport.deserializeUser((user, done) => {
 })
 
 app.use('/api/v1/users', userRoutes)
+app.use('/api/v1/parties', partyRoutes)
 
 export default app
