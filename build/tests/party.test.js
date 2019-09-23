@@ -63,5 +63,27 @@ describe('Testing the party endpoints', function () {
       done();
     });
   });
+  it('Should view details of a single party', function (done) {
+    _chai["default"].request(_app["default"]).get("".concat(partyUrl, "/1")).send().end(function (err, res) {
+      expect(res.status).to.equal(200);
+      expect(res.body.message).to.equal('Single party');
+      done();
+    });
+  });
+  it('Should throw 404 if party is not found', function (done) {
+    _chai["default"].request(_app["default"]).get("".concat(partyUrl, "/50")).send().end(function (err, res) {
+      expect(res.status).to.equal(404);
+      expect(res.body.message).to.equal('Party not found');
+      done();
+    });
+  });
+  it('Should throw 400 if something wrong happens while fetching a party', function (done) {
+    _chai["default"].request(_app["default"]) // Tring to pass an invalid data type of party id will throw a 400 error
+    .get("".concat(partyUrl, "/invaliddata")).send().end(function (err, res) {
+      expect(res.status).to.equal(400);
+      expect(res.body.status).to.equal('error');
+      done();
+    });
+  });
 });
 //# sourceMappingURL=party.test.js.map

@@ -14,10 +14,12 @@ var _PartyController = _interopRequireDefault(require("../controllers/PartyContr
 var _auth = _interopRequireDefault(require("../middleware/auth"));
 
 var createParty = _PartyController["default"].createParty,
-    filterPartiesByUser = _PartyController["default"].filterPartiesByUser;
+    filterPartiesByUser = _PartyController["default"].filterPartiesByUser,
+    viewSingleParty = _PartyController["default"].viewSingleParty;
 var router = (0, _express.Router)();
 router.post('/', _auth["default"], createParty);
 router.get('/createdby/:user_id', filterPartiesByUser);
+router.get('/:party_id', viewSingleParty);
 var _default = router;
 exports["default"] = _default;
 //# sourceMappingURL=PartyRoutes.js.map

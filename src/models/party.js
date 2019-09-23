@@ -53,7 +53,7 @@ export default (sequelize, DataTypes) => {
         {}
     )
     Party.associate = ({ User }) => {
-        Party.belongsTo(User, { foreignKey: 'host_id' })
+        Party.belongsTo(User, { as: 'host', foreignKey: 'host_id' })
         Party.belongsToMany(User, { as: 'guests', through: 'party_guests', foreignKey: 'party_id' })
     }
     return Party

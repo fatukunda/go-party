@@ -8,15 +8,36 @@ class PartyService {
             throw error
         }
     }
-    
+
     static async filterPartiesByUser(user_id, limit, offset) {
         try {
             return await database.Party.findAndCountAll({
                 where: {
                     host_id: user_id,
                 },
+                attributes: ['id', 'title', 'location', 'description', 'party_date', 'is_free', 'party_avatar', 'createdAt', 'updatedAt'],
+                include: {
+                    model: database.User,
+                    as: 'host',
+                    attributes: ['id', 'username'],
+                },
                 limit,
                 offset,
+            })
+        } catch (error) {
+            throw error
+        }
+    }
+
+    static async viewSingleParty(party_id) {
+        try {
+            return await database.Party.findByPk(party_id, {
+                attributes: ['id', 'title', 'location', 'description', 'party_date', 'is_free', 'party_avatar', 'createdAt', 'updatedAt'],
+                include: {
+                    model: database.User,
+                    as: 'host',
+                    attributes: ['id', 'username'],
+                },
             })
         } catch (error) {
             throw error

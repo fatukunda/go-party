@@ -33,10 +33,26 @@ class PartyController {
         try {
             const parties = await PartyService.filterPartiesByUser(user_id, limit, offset)
             util.setSuccess(200, 'User created parties', parties)
-            util.send(res)
+            return util.send(res)
         } catch (error) {
             util.setError(400, error.message)
-            util.send(res)
+            return util.send(res)
+        }
+    }
+
+    static async viewSingleParty(req, res) {
+        const party_id = parseInt(req.params.party_id)
+        try {
+            const party = await PartyService.viewSingleParty(party_id)
+            if (!party) {
+                util.setError(404, 'Party not found')
+                return util.send(res)
+            }
+            util.setSuccess(200, 'Single party', party)
+            return util.send(res)
+        } catch (error) {
+            util.setError(400, error.message)
+            return util.send(res)
         }
     }
 }

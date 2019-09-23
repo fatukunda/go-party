@@ -112,15 +112,13 @@ function () {
               case 7:
                 parties = _context2.sent;
                 util.setSuccess(200, 'User created parties', parties);
-                util.send(res);
-                _context2.next = 16;
-                break;
+                return _context2.abrupt("return", util.send(res));
 
               case 12:
                 _context2.prev = 12;
                 _context2.t0 = _context2["catch"](4);
                 util.setError(400, _context2.t0.message);
-                util.send(res);
+                return _context2.abrupt("return", util.send(res));
 
               case 16:
               case "end":
@@ -135,6 +133,57 @@ function () {
       }
 
       return filterPartiesByUser;
+    }()
+  }, {
+    key: "viewSingleParty",
+    value: function () {
+      var _viewSingleParty = (0, _asyncToGenerator2["default"])(
+      /*#__PURE__*/
+      _regenerator["default"].mark(function _callee3(req, res) {
+        var party_id, party;
+        return _regenerator["default"].wrap(function _callee3$(_context3) {
+          while (1) {
+            switch (_context3.prev = _context3.next) {
+              case 0:
+                party_id = parseInt(req.params.party_id);
+                _context3.prev = 1;
+                _context3.next = 4;
+                return _PartyService["default"].viewSingleParty(party_id);
+
+              case 4:
+                party = _context3.sent;
+
+                if (party) {
+                  _context3.next = 8;
+                  break;
+                }
+
+                util.setError(404, 'Party not found');
+                return _context3.abrupt("return", util.send(res));
+
+              case 8:
+                util.setSuccess(200, 'Single party', party);
+                return _context3.abrupt("return", util.send(res));
+
+              case 12:
+                _context3.prev = 12;
+                _context3.t0 = _context3["catch"](1);
+                util.setError(400, _context3.t0.message);
+                return _context3.abrupt("return", util.send(res));
+
+              case 16:
+              case "end":
+                return _context3.stop();
+            }
+          }
+        }, _callee3, null, [[1, 12]]);
+      }));
+
+      function viewSingleParty(_x5, _x6) {
+        return _viewSingleParty.apply(this, arguments);
+      }
+
+      return viewSingleParty;
     }()
   }]);
   return PartyController;
