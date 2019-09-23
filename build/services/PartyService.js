@@ -76,6 +76,12 @@ function () {
                   where: {
                     host_id: user_id
                   },
+                  attributes: ['id', 'title', 'location', 'description', 'party_date', 'is_free', 'party_avatar', 'createdAt', 'updatedAt'],
+                  include: {
+                    model: _models["default"].User,
+                    as: 'host',
+                    attributes: ['id', 'username']
+                  },
                   limit: limit,
                   offset: offset
                 });
@@ -101,6 +107,49 @@ function () {
       }
 
       return filterPartiesByUser;
+    }()
+  }, {
+    key: "viewSingleParty",
+    value: function () {
+      var _viewSingleParty = (0, _asyncToGenerator2["default"])(
+      /*#__PURE__*/
+      _regenerator["default"].mark(function _callee3(party_id) {
+        return _regenerator["default"].wrap(function _callee3$(_context3) {
+          while (1) {
+            switch (_context3.prev = _context3.next) {
+              case 0:
+                _context3.prev = 0;
+                _context3.next = 3;
+                return _models["default"].Party.findByPk(party_id, {
+                  attributes: ['id', 'title', 'location', 'description', 'party_date', 'is_free', 'party_avatar', 'createdAt', 'updatedAt'],
+                  include: {
+                    model: _models["default"].User,
+                    as: 'host',
+                    attributes: ['id', 'username']
+                  }
+                });
+
+              case 3:
+                return _context3.abrupt("return", _context3.sent);
+
+              case 6:
+                _context3.prev = 6;
+                _context3.t0 = _context3["catch"](0);
+                throw _context3.t0;
+
+              case 9:
+              case "end":
+                return _context3.stop();
+            }
+          }
+        }, _callee3, null, [[0, 6]]);
+      }));
+
+      function viewSingleParty(_x5) {
+        return _viewSingleParty.apply(this, arguments);
+      }
+
+      return viewSingleParty;
     }()
   }]);
   return PartyService;

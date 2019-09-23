@@ -21,9 +21,10 @@ var _passport = _interopRequireDefault(require("passport"));
 
 var _UserRoutes = _interopRequireDefault(require("./routes/UserRoutes"));
 
+var _PartyRoutes = _interopRequireDefault(require("./routes/PartyRoutes"));
+
 // eslint-disable-next-line no-undef
 require('./middleware/facebookAuth')(_passport["default"]);
-var _PartyRoutes = _interopRequireDefault(require("./routes/PartyRoutes"));
 
 _dotenv["default"].config();
 

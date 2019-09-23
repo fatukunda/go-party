@@ -59,6 +59,7 @@ var _default = function _default(sequelize, DataTypes) {
   Party.associate = function (_ref) {
     var User = _ref.User;
     Party.belongsTo(User, {
+      as: 'host',
       foreignKey: 'host_id'
     });
     Party.belongsToMany(User, {

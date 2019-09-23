@@ -44,11 +44,7 @@ describe('Testing the user endpoints:', function () {
       done();
     });
   });
-<<<<<<< HEAD:build/tests/user.test.js
-  it('Should throw an error is something wrong happens while creating a user', function (done) {
-=======
   it('Should throw an error if something wrong happens while creating a user', function (done) {
->>>>>>> ft(Create a party): User creates a party:build/tests/a.user.test.js
     // In this test case, we are trying to create a user with an invalid email address.
     _chai["default"].request(_app["default"]).post(usersUrl).set('Accept', 'application/json').send(_testData.invalidDataUser).end(function (err, res) {
       expect(res.status).to.equal(400);
@@ -84,11 +80,7 @@ describe('Testing the user endpoints:', function () {
   it('Should throw an error if something happens while verifying an account', function (done) {
     // In this test case we are trying to use a wrong JWT_KEY than the one that was used to create the Token.
     var token = _jsonwebtoken["default"].sign({
-<<<<<<< HEAD:build/tests/user.test.js
-      id: 1
-=======
       id: _testData.validUser.id
->>>>>>> ft(Create a party): User creates a party:build/tests/a.user.test.js
     }, 'wrong_jwt_key', {
       expiresIn: '1h'
     });

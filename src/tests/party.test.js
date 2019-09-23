@@ -75,4 +75,41 @@ describe('Testing the party endpoints', () => {
                 done()
             })
     })
+
+    it('Should view details of a single party', done => {
+        chai
+            .request(app)
+            .get(`${partyUrl}/1`)
+            .send()
+            .end((err, res) => {
+                expect(res.status).to.equal(200)
+                expect(res.body.message).to.equal('Single party')
+                done()
+            })
+    })
+
+    it('Should throw 404 if party is not found', done => {
+        chai
+            .request(app)
+            .get(`${partyUrl}/50`)
+            .send()
+            .end((err, res) => {
+                expect(res.status).to.equal(404)
+                expect(res.body.message).to.equal('Party not found')
+                done()
+            })
+    })
+
+    it('Should throw 400 if something wrong happens while fetching a party', done => {
+        chai
+            .request(app)
+        // Tring to pass an invalid data type of party id will throw a 400 error
+            .get(`${partyUrl}/invaliddata`)
+            .send()
+            .end((err, res) => {
+                expect(res.status).to.equal(400)
+                expect(res.body.status).to.equal('error')
+                done()
+            })
+    })
 })
