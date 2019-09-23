@@ -55,6 +55,33 @@ class PartyController {
             return util.send(res)
         }
     }
+
+    static async editParty(req, res) {
+        // Update party
+        const acceptedOptions = ['title', 'location', 'description', 'party_date', 'is_free']
+        const receivedOptions = Object.keys(req.body)
+        const user = req.user
+        const party_id = parseInt(req.params.party_id)
+        const isUpdateOption = receivedOptions.every(option => acceptedOptions.includes(option))
+        if (!isUpdateOption) {
+            util.setError(400, 'Invalid update options!')
+            return util.send(res)
+        }
+        try {
+            const party = await PartyService.findAndUpdateParty(party_id, user.id)
+            if (!party) {
+                util.setError(404, 'Party not found')
+                return util.send(res)
+            }
+            receivedOptions.forEach(option => (party[option] = req.body[option]))
+            await party.save()
+            util.setSuccess(200, 'Party updated successfully', party)
+            return util.send(res)
+        } catch (error) {
+            util.setError(400, error.message)
+            return util.send(res)
+        }
+    }
 }
 
 export default PartyController
