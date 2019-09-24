@@ -87,6 +87,14 @@ class PartyService {
             throw error
         }
     }
+
+    static async searchParty(party_id) {
+        try {
+            return await database.Party.findByPk(party_id)
+        } catch (error) {
+            throw error
+        }
+    }
 }
 
 export default PartyService
