@@ -17,10 +17,12 @@ var _default = function _default(sequelize, DataTypes) {
     var User = _ref.User,
         Party = _ref.Party;
     Request.belongsTo(User, {
-      foreignKey: 'guest_id'
+      foreignKey: 'guest_id',
+      as: 'requestor'
     });
     Request.belongsTo(Party, {
-      foreignKey: 'party_id'
+      foreignKey: 'party_id',
+      as: 'party'
     });
   };
 

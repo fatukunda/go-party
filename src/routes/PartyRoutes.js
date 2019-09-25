@@ -4,7 +4,7 @@ import RequestController from '../controllers/RequestController'
 import auth from '../middleware/auth'
 
 const { createParty, filterPartiesByUser, viewSingleParty, editParty, deleteParty } = PartyController
-const { sendPartyRequest } = RequestController
+const { sendPartyRequest, getPartyRequests } = RequestController
 
 const router = Router()
 
@@ -14,4 +14,5 @@ router.get('/:party_id', viewSingleParty)
 router.patch('/:party_id', auth, editParty)
 router.delete('/:party_id', auth, deleteParty)
 router.post('/:party_id/requests', auth, sendPartyRequest)
+router.get('/:party_id/requests', auth, getPartyRequests)
 export default router

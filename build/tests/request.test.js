@@ -170,5 +170,111 @@ describe('Testing the party requests endpoints', function () {
       }
     }, _callee5);
   }))));
+  it('Should get party requests', (0, _testData.mochAsync)(
+  /*#__PURE__*/
+  (0, _asyncToGenerator2["default"])(
+  /*#__PURE__*/
+  _regenerator["default"].mark(function _callee6() {
+    var res;
+    return _regenerator["default"].wrap(function _callee6$(_context6) {
+      while (1) {
+        switch (_context6.prev = _context6.next) {
+          case 0:
+            _context6.next = 2;
+            return _chai["default"].request(_app["default"]).get("".concat(partyUrl, "/1/requests")).set('Authorization', "Bearer ".concat(token)).send();
+
+          case 2:
+            res = _context6.sent;
+            expect(res.status).to.equal(200);
+            expect(res.body.message).to.equal('Party requests');
+
+          case 5:
+          case "end":
+            return _context6.stop();
+        }
+      }
+    }, _callee6);
+  }))));
+  it('Should throw a 404 if a party to fetch requests from is not found', (0, _testData.mochAsync)(
+  /*#__PURE__*/
+  (0, _asyncToGenerator2["default"])(
+  /*#__PURE__*/
+  _regenerator["default"].mark(function _callee7() {
+    var res;
+    return _regenerator["default"].wrap(function _callee7$(_context7) {
+      while (1) {
+        switch (_context7.prev = _context7.next) {
+          case 0:
+            _context7.next = 2;
+            return _chai["default"].request(_app["default"]).get("".concat(partyUrl, "/5/requests")).set('Authorization', "Bearer ".concat(token)).send();
+
+          case 2:
+            res = _context7.sent;
+            expect(res.status).to.equal(404);
+            expect(res.body.message).to.equal('Party does not exist.');
+
+          case 5:
+          case "end":
+            return _context7.stop();
+        }
+      }
+    }, _callee7);
+  }))));
+  it('Should throw a 400 if a user tries to fetch requests for a party they did not create.', (0, _testData.mochAsync)(
+  /*#__PURE__*/
+  (0, _asyncToGenerator2["default"])(
+  /*#__PURE__*/
+  _regenerator["default"].mark(function _callee8() {
+    var localToken, res;
+    return _regenerator["default"].wrap(function _callee8$(_context8) {
+      while (1) {
+        switch (_context8.prev = _context8.next) {
+          case 0:
+            localToken = _jsonwebtoken["default"].sign({
+              id: 2
+            }, process.env.JWT_KEY, {
+              expiresIn: '1h'
+            });
+            _context8.next = 3;
+            return _chai["default"].request(_app["default"]).get("".concat(partyUrl, "/1/requests")).set('Authorization', "Bearer ".concat(localToken)).send();
+
+          case 3:
+            res = _context8.sent;
+            expect(res.status).to.equal(400);
+            expect(res.body.message).to.equal('You can only view requests for parties you created.');
+
+          case 6:
+          case "end":
+            return _context8.stop();
+        }
+      }
+    }, _callee8);
+  }))));
+  it('Should throw a 400 if anything goes wrong while fetching party requests.', (0, _testData.mochAsync)(
+  /*#__PURE__*/
+  (0, _asyncToGenerator2["default"])(
+  /*#__PURE__*/
+  _regenerator["default"].mark(function _callee9() {
+    var res;
+    return _regenerator["default"].wrap(function _callee9$(_context9) {
+      while (1) {
+        switch (_context9.prev = _context9.next) {
+          case 0:
+            _context9.next = 2;
+            return _chai["default"].request(_app["default"]) // The url expects an integer but a string is provided
+            .get("".concat(partyUrl, "/invalidInput/requests")).set('Authorization', "Bearer ".concat(token)).send();
+
+          case 2:
+            res = _context9.sent;
+            expect(res.status).to.equal(400);
+            expect(res.body.status).to.equal('error');
+
+          case 5:
+          case "end":
+            return _context9.stop();
+        }
+      }
+    }, _callee9);
+  }))));
 });
 //# sourceMappingURL=request.test.js.map

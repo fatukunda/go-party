@@ -115,6 +115,74 @@ function () {
 
       return sendPartyRequest;
     }()
+  }, {
+    key: "getPartyRequests",
+    value: function () {
+      var _getPartyRequests = (0, _asyncToGenerator2["default"])(
+      /*#__PURE__*/
+      _regenerator["default"].mark(function _callee2(req, res) {
+        var user, party_id, party, requests;
+        return _regenerator["default"].wrap(function _callee2$(_context2) {
+          while (1) {
+            switch (_context2.prev = _context2.next) {
+              case 0:
+                user = req.user;
+                party_id = req.params.party_id;
+                _context2.prev = 2;
+                _context2.next = 5;
+                return _PartyService["default"].searchParty(party_id);
+
+              case 5:
+                party = _context2.sent;
+
+                if (party) {
+                  _context2.next = 9;
+                  break;
+                }
+
+                util.setError(404, 'Party does not exist.');
+                return _context2.abrupt("return", util.send(res));
+
+              case 9:
+                if (!(party.host_id !== user.id)) {
+                  _context2.next = 12;
+                  break;
+                }
+
+                util.setError(400, 'You can only view requests for parties you created.');
+                return _context2.abrupt("return", util.send(res));
+
+              case 12:
+                _context2.next = 14;
+                return _RequestService["default"].getPartyRequests(party.id);
+
+              case 14:
+                requests = _context2.sent;
+                util.setSuccess(200, 'Party requests', requests);
+                util.send(res);
+                _context2.next = 23;
+                break;
+
+              case 19:
+                _context2.prev = 19;
+                _context2.t0 = _context2["catch"](2);
+                util.setError(400, _context2.t0.message);
+                util.send(res);
+
+              case 23:
+              case "end":
+                return _context2.stop();
+            }
+          }
+        }, _callee2, null, [[2, 19]]);
+      }));
+
+      function getPartyRequests(_x3, _x4) {
+        return _getPartyRequests.apply(this, arguments);
+      }
+
+      return getPartyRequests;
+    }()
   }]);
   return RequestController;
 }();

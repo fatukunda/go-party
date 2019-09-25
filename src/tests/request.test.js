@@ -82,4 +82,58 @@ describe('Testing the party requests endpoints', () => {
             expect(res.body.status).to.equal('error')
         })
     )
+
+    it(
+        'Should get party requests',
+        mochAsync(async () => {
+            let res = await chai
+                .request(app)
+                .get(`${partyUrl}/1/requests`)
+                .set('Authorization', `Bearer ${token}`)
+                .send()
+            expect(res.status).to.equal(200)
+            expect(res.body.message).to.equal('Party requests')
+        })
+    )
+
+    it(
+        'Should throw a 404 if a party to fetch requests from is not found',
+        mochAsync(async () => {
+            let res = await chai
+                .request(app)
+                .get(`${partyUrl}/5/requests`)
+                .set('Authorization', `Bearer ${token}`)
+                .send()
+            expect(res.status).to.equal(404)
+            expect(res.body.message).to.equal('Party does not exist.')
+        })
+    )
+
+    it(
+        'Should throw a 400 if a user tries to fetch requests for a party they did not create.',
+        mochAsync(async () => {
+            const localToken = jwt.sign({ id: 2 }, process.env.JWT_KEY, { expiresIn: '1h' })
+            let res = await chai
+                .request(app)
+                .get(`${partyUrl}/1/requests`)
+                .set('Authorization', `Bearer ${localToken}`)
+                .send()
+            expect(res.status).to.equal(400)
+            expect(res.body.message).to.equal('You can only view requests for parties you created.')
+        })
+    )
+
+    it(
+        'Should throw a 400 if anything goes wrong while fetching party requests.',
+        mochAsync(async () => {
+            let res = await chai
+                .request(app)
+                // The url expects an integer but a string is provided
+                .get(`${partyUrl}/invalidInput/requests`)
+                .set('Authorization', `Bearer ${token}`)
+                .send()
+            expect(res.status).to.equal(400)
+            expect(res.body.status).to.equal('error')
+        })
+    )
 })

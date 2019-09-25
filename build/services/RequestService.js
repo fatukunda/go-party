@@ -101,6 +101,52 @@ function () {
 
       return checkRequestExists;
     }()
+  }, {
+    key: "getPartyRequests",
+    value: function () {
+      var _getPartyRequests = (0, _asyncToGenerator2["default"])(
+      /*#__PURE__*/
+      _regenerator["default"].mark(function _callee3(party_id) {
+        return _regenerator["default"].wrap(function _callee3$(_context3) {
+          while (1) {
+            switch (_context3.prev = _context3.next) {
+              case 0:
+                _context3.prev = 0;
+                _context3.next = 3;
+                return _models["default"].Request.findAndCountAll({
+                  where: {
+                    party_id: party_id
+                  },
+                  attributes: ['id', 'status'],
+                  include: {
+                    model: _models["default"].User,
+                    as: 'requestor',
+                    attributes: ['id', 'username', 'email']
+                  }
+                });
+
+              case 3:
+                return _context3.abrupt("return", _context3.sent);
+
+              case 6:
+                _context3.prev = 6;
+                _context3.t0 = _context3["catch"](0);
+                throw _context3.t0;
+
+              case 9:
+              case "end":
+                return _context3.stop();
+            }
+          }
+        }, _callee3, null, [[0, 6]]);
+      }));
+
+      function getPartyRequests(_x4) {
+        return _getPartyRequests.apply(this, arguments);
+      }
+
+      return getPartyRequests;
+    }()
   }]);
   return RequestService;
 }();

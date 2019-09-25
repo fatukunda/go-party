@@ -21,6 +21,24 @@ class RequestService {
             throw error
         }
     }
+
+    static async getPartyRequests(party_id) {
+        try {
+            return await database.Request.findAndCountAll({
+                where: {
+                    party_id
+                },
+                attributes: ['id', 'status'],
+                include: {
+                    model: database.User,
+                    as: 'requestor',
+                    attributes: ['id', 'username', 'email']
+                }
+            })
+        } catch (error) {
+            throw error
+        }
+    }
 }
 
 export default RequestService
