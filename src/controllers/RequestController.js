@@ -34,6 +34,28 @@ class RequestController {
             return util.send(res)
         }
     }
+
+    static async getPartyRequests(req, res) {
+        const user = req.user
+        const { party_id } = req.params
+        try {
+            const party = await PartyService.searchParty(party_id)
+            if (!party) {
+                util.setError(404, 'Party does not exist.')
+                return util.send(res)
+            }
+            if (party.host_id !== user.id) {
+                util.setError(400, 'You can only view requests for parties you created.')
+                return util.send(res)
+            }
+            const requests = await RequestService.getPartyRequests(party.id)
+            util.setSuccess(200, 'Party requests', requests)
+            util.send(res)
+        } catch (error) {
+            util.setError(400, error.message)
+            util.send(res)
+        }
+    }
 }
 
 export default RequestController

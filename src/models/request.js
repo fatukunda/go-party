@@ -6,8 +6,8 @@ export default (sequelize, DataTypes) => {
         },
     }, {})
     Request.associate = function({ User, Party }) {
-        Request.belongsTo(User, { foreignKey: 'guest_id'})
-        Request.belongsTo(Party, { foreignKey: 'party_id'})
+        Request.belongsTo(User, { foreignKey: 'guest_id', as: 'requestor'})
+        Request.belongsTo(Party, { foreignKey: 'party_id', as: 'party'})
     }
     return Request
 }
