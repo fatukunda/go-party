@@ -193,6 +193,42 @@ function () {
 
       return findParty;
     }()
+  }, {
+    key: "searchParty",
+    value: function () {
+      var _searchParty = (0, _asyncToGenerator2["default"])(
+      /*#__PURE__*/
+      _regenerator["default"].mark(function _callee5(party_id) {
+        return _regenerator["default"].wrap(function _callee5$(_context5) {
+          while (1) {
+            switch (_context5.prev = _context5.next) {
+              case 0:
+                _context5.prev = 0;
+                _context5.next = 3;
+                return _models["default"].Party.findByPk(party_id);
+
+              case 3:
+                return _context5.abrupt("return", _context5.sent);
+
+              case 6:
+                _context5.prev = 6;
+                _context5.t0 = _context5["catch"](0);
+                throw _context5.t0;
+
+              case 9:
+              case "end":
+                return _context5.stop();
+            }
+          }
+        }, _callee5, null, [[0, 6]]);
+      }));
+
+      function searchParty(_x8) {
+        return _searchParty.apply(this, arguments);
+      }
+
+      return searchParty;
+    }()
   }]);
   return PartyService;
 }();
