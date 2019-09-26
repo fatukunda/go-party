@@ -139,6 +139,73 @@ describe('Testing the party requests endpoints', () => {
     )
 
     it(
+        'Should accept a party request',
+        mochAsync(async () => {
+            let res = await chai
+                .request(app)
+                .patch(`${partyUrl}/1/requests/1/accepted`)
+                .set('Authorization', `Bearer ${token}`)
+                .send()
+            expect(res.status).to.equal(200)
+            expect(res.body.message).to.equal('Party request altered.')
+        })
+    )
+
+    it(
+        'Should throw a 404 if the party with the request does not exist',
+        mochAsync(async () => {
+            let res = await chai
+                .request(app)
+                .patch(`${partyUrl}/100/requests/1/accepted`)
+                .set('Authorization', `Bearer ${token}`)
+                .send()
+            expect(res.status).to.equal(404)
+            expect(res.body.message).to.equal('Party with that request does not exist.')
+        })
+    )
+
+    it(
+        'Should throw a 400 if a user tries to alter a request to a party they did not create',
+        mochAsync(async () => {
+            const localToken = jwt.sign({ id: 2 }, process.env.JWT_KEY, { expiresIn: '1h' })
+            let res = await chai
+                .request(app)
+                .patch(`${partyUrl}/1/requests/1/accepted`)
+                .set('Authorization', `Bearer ${localToken}`)
+                .send()
+            expect(res.status).to.equal(400)
+            expect(res.body.message).to.equal('You cannot alter a request for a party you did not create.')
+        })
+    )
+
+    it(
+        'Should throw a 404 if a request being altered does not exist.',
+        mochAsync(async () => {
+            let res = await chai
+                .request(app)
+                .patch(`${partyUrl}/1/requests/2/accepted`)
+                .set('Authorization', `Bearer ${token}`)
+                .send()
+            expect(res.status).to.equal(404)
+            expect(res.body.message).to.equal('The request you are trying to alter does not exist.')
+        })
+    )
+
+    it(
+        'Should throw a 400 if something wrong happens while altering a request.',
+        mochAsync(async () => {
+            let res = await chai
+                .request(app)
+                // We are passing a parameter `notallowed` that our route database does not expect
+                .patch(`${partyUrl}/1/requests/1/notallowed`)
+                .set('Authorization', `Bearer ${token}`)
+                .send()
+            expect(res.status).to.equal(400)
+            expect(res.body.status).to.equal('error')
+        })
+    )
+
+    it(
         'Should successfully withdraw a party request',
         mochAsync(async () => {
             let res = await chai

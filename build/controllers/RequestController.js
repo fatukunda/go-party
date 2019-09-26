@@ -246,6 +246,86 @@ function () {
 
       return withdrawPartyRequest;
     }()
+  }, {
+    key: "modifyPartyRequest",
+    value: function () {
+      var _modifyPartyRequest = (0, _asyncToGenerator2["default"])(
+      /*#__PURE__*/
+      _regenerator["default"].mark(function _callee4(req, res) {
+        var user, params, party_id, request_id, status, party, request;
+        return _regenerator["default"].wrap(function _callee4$(_context4) {
+          while (1) {
+            switch (_context4.prev = _context4.next) {
+              case 0:
+                user = req.user, params = req.params;
+                party_id = params.party_id, request_id = params.request_id, status = params.status;
+                _context4.prev = 2;
+                _context4.next = 5;
+                return _PartyService["default"].searchParty(party_id);
+
+              case 5:
+                party = _context4.sent;
+
+                if (party) {
+                  _context4.next = 9;
+                  break;
+                }
+
+                util.setError(404, 'Party with that request does not exist.');
+                return _context4.abrupt("return", util.send(res));
+
+              case 9:
+                if (!(party.host_id !== user.id)) {
+                  _context4.next = 12;
+                  break;
+                }
+
+                util.setError(400, 'You cannot alter a request for a party you did not create.');
+                return _context4.abrupt("return", util.send(res));
+
+              case 12:
+                _context4.next = 14;
+                return _RequestService["default"].findPartyRequest(request_id);
+
+              case 14:
+                request = _context4.sent;
+
+                if (request) {
+                  _context4.next = 18;
+                  break;
+                }
+
+                util.setError(404, 'The request you are trying to alter does not exist.');
+                return _context4.abrupt("return", util.send(res));
+
+              case 18:
+                _context4.next = 20;
+                return _RequestService["default"].modifyPartyRequest(request.id, status);
+
+              case 20:
+                util.setSuccess(200, 'Party request altered.');
+                return _context4.abrupt("return", util.send(res));
+
+              case 24:
+                _context4.prev = 24;
+                _context4.t0 = _context4["catch"](2);
+                util.setError(400, _context4.t0.message);
+                return _context4.abrupt("return", util.send(res));
+
+              case 28:
+              case "end":
+                return _context4.stop();
+            }
+          }
+        }, _callee4, null, [[2, 24]]);
+      }));
+
+      function modifyPartyRequest(_x7, _x8) {
+        return _modifyPartyRequest.apply(this, arguments);
+      }
+
+      return modifyPartyRequest;
+    }()
   }]);
   return RequestController;
 }();

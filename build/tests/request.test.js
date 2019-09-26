@@ -277,7 +277,7 @@ describe('Testing the party requests endpoints', function () {
       }
     }, _callee9);
   }))));
-  it('Should successfully withdraw a party request', (0, _testData.mochAsync)(
+  it('Should accept a party request', (0, _testData.mochAsync)(
   /*#__PURE__*/
   (0, _asyncToGenerator2["default"])(
   /*#__PURE__*/
@@ -288,12 +288,12 @@ describe('Testing the party requests endpoints', function () {
         switch (_context10.prev = _context10.next) {
           case 0:
             _context10.next = 2;
-            return _chai["default"].request(_app["default"])["delete"]("".concat(usersUrl, "/me/requests/1")).set('Authorization', "Bearer ".concat(token)).send();
+            return _chai["default"].request(_app["default"]).patch("".concat(partyUrl, "/1/requests/1/accepted")).set('Authorization', "Bearer ".concat(token)).send();
 
           case 2:
             res = _context10.sent;
             expect(res.status).to.equal(200);
-            expect(res.body.message).to.equal('Party request successfully withdrawn');
+            expect(res.body.message).to.equal('Party request altered.');
 
           case 5:
           case "end":
@@ -302,7 +302,7 @@ describe('Testing the party requests endpoints', function () {
       }
     }, _callee10);
   }))));
-  it('Should throw a 404 if a request does not exist.', (0, _testData.mochAsync)(
+  it('Should throw a 404 if the party with the request does not exist', (0, _testData.mochAsync)(
   /*#__PURE__*/
   (0, _asyncToGenerator2["default"])(
   /*#__PURE__*/
@@ -313,12 +313,12 @@ describe('Testing the party requests endpoints', function () {
         switch (_context11.prev = _context11.next) {
           case 0:
             _context11.next = 2;
-            return _chai["default"].request(_app["default"])["delete"]("".concat(usersUrl, "/me/requests/4")).set('Authorization', "Bearer ".concat(token)).send();
+            return _chai["default"].request(_app["default"]).patch("".concat(partyUrl, "/100/requests/1/accepted")).set('Authorization', "Bearer ".concat(token)).send();
 
           case 2:
             res = _context11.sent;
             expect(res.status).to.equal(404);
-            expect(res.body.message).to.equal('That party request does not exist.');
+            expect(res.body.message).to.equal('Party with that request does not exist.');
 
           case 5:
           case "end":
@@ -327,31 +327,162 @@ describe('Testing the party requests endpoints', function () {
       }
     }, _callee11);
   }))));
-  it('Should throw a 400 when something goes wrong trying to withdraw a party request', (0, _testData.mochAsync)(
+  it('Should throw a 400 if a user tries to alter a request to a party they did not create', (0, _testData.mochAsync)(
   /*#__PURE__*/
   (0, _asyncToGenerator2["default"])(
   /*#__PURE__*/
   _regenerator["default"].mark(function _callee12() {
-    var res;
+    var localToken, res;
     return _regenerator["default"].wrap(function _callee12$(_context12) {
       while (1) {
         switch (_context12.prev = _context12.next) {
           case 0:
-            _context12.next = 2;
-            return _chai["default"].request(_app["default"]) // The url expects an integer for request id but a string is provided
-            ["delete"]("".concat(usersUrl, "/me/requests/invalidrequestid")).set('Authorization', "Bearer ".concat(token)).send();
+            localToken = _jsonwebtoken["default"].sign({
+              id: 2
+            }, process.env.JWT_KEY, {
+              expiresIn: '1h'
+            });
+            _context12.next = 3;
+            return _chai["default"].request(_app["default"]).patch("".concat(partyUrl, "/1/requests/1/accepted")).set('Authorization', "Bearer ".concat(localToken)).send();
 
-          case 2:
+          case 3:
             res = _context12.sent;
             expect(res.status).to.equal(400);
-            expect(res.body.status).to.equal('error');
+            expect(res.body.message).to.equal('You cannot alter a request for a party you did not create.');
 
-          case 5:
+          case 6:
           case "end":
             return _context12.stop();
         }
       }
     }, _callee12);
+  }))));
+  it('Should throw a 404 if a request being altered does not exist.', (0, _testData.mochAsync)(
+  /*#__PURE__*/
+  (0, _asyncToGenerator2["default"])(
+  /*#__PURE__*/
+  _regenerator["default"].mark(function _callee13() {
+    var res;
+    return _regenerator["default"].wrap(function _callee13$(_context13) {
+      while (1) {
+        switch (_context13.prev = _context13.next) {
+          case 0:
+            _context13.next = 2;
+            return _chai["default"].request(_app["default"]).patch("".concat(partyUrl, "/1/requests/2/accepted")).set('Authorization', "Bearer ".concat(token)).send();
+
+          case 2:
+            res = _context13.sent;
+            expect(res.status).to.equal(404);
+            expect(res.body.message).to.equal('The request you are trying to alter does not exist.');
+
+          case 5:
+          case "end":
+            return _context13.stop();
+        }
+      }
+    }, _callee13);
+  }))));
+  it('Should throw a 400 if something wrong happens while altering a request.', (0, _testData.mochAsync)(
+  /*#__PURE__*/
+  (0, _asyncToGenerator2["default"])(
+  /*#__PURE__*/
+  _regenerator["default"].mark(function _callee14() {
+    var res;
+    return _regenerator["default"].wrap(function _callee14$(_context14) {
+      while (1) {
+        switch (_context14.prev = _context14.next) {
+          case 0:
+            _context14.next = 2;
+            return _chai["default"].request(_app["default"]) // We are passing a parameter `notallowed` that our route database does not expect
+            .patch("".concat(partyUrl, "/1/requests/1/notallowed")).set('Authorization', "Bearer ".concat(token)).send();
+
+          case 2:
+            res = _context14.sent;
+            expect(res.status).to.equal(400);
+            expect(res.body.status).to.equal('error');
+
+          case 5:
+          case "end":
+            return _context14.stop();
+        }
+      }
+    }, _callee14);
+  }))));
+  it('Should successfully withdraw a party request', (0, _testData.mochAsync)(
+  /*#__PURE__*/
+  (0, _asyncToGenerator2["default"])(
+  /*#__PURE__*/
+  _regenerator["default"].mark(function _callee15() {
+    var res;
+    return _regenerator["default"].wrap(function _callee15$(_context15) {
+      while (1) {
+        switch (_context15.prev = _context15.next) {
+          case 0:
+            _context15.next = 2;
+            return _chai["default"].request(_app["default"])["delete"]("".concat(usersUrl, "/me/requests/1")).set('Authorization', "Bearer ".concat(token)).send();
+
+          case 2:
+            res = _context15.sent;
+            expect(res.status).to.equal(200);
+            expect(res.body.message).to.equal('Party request successfully withdrawn');
+
+          case 5:
+          case "end":
+            return _context15.stop();
+        }
+      }
+    }, _callee15);
+  }))));
+  it('Should throw a 404 if a request does not exist.', (0, _testData.mochAsync)(
+  /*#__PURE__*/
+  (0, _asyncToGenerator2["default"])(
+  /*#__PURE__*/
+  _regenerator["default"].mark(function _callee16() {
+    var res;
+    return _regenerator["default"].wrap(function _callee16$(_context16) {
+      while (1) {
+        switch (_context16.prev = _context16.next) {
+          case 0:
+            _context16.next = 2;
+            return _chai["default"].request(_app["default"])["delete"]("".concat(usersUrl, "/me/requests/4")).set('Authorization', "Bearer ".concat(token)).send();
+
+          case 2:
+            res = _context16.sent;
+            expect(res.status).to.equal(404);
+            expect(res.body.message).to.equal('That party request does not exist.');
+
+          case 5:
+          case "end":
+            return _context16.stop();
+        }
+      }
+    }, _callee16);
+  }))));
+  it('Should throw a 400 when something goes wrong trying to withdraw a party request', (0, _testData.mochAsync)(
+  /*#__PURE__*/
+  (0, _asyncToGenerator2["default"])(
+  /*#__PURE__*/
+  _regenerator["default"].mark(function _callee17() {
+    var res;
+    return _regenerator["default"].wrap(function _callee17$(_context17) {
+      while (1) {
+        switch (_context17.prev = _context17.next) {
+          case 0:
+            _context17.next = 2;
+            return _chai["default"].request(_app["default"]) // The url expects an integer for request id but a string is provided
+            ["delete"]("".concat(usersUrl, "/me/requests/invalidrequestid")).set('Authorization', "Bearer ".concat(token)).send();
+
+          case 2:
+            res = _context17.sent;
+            expect(res.status).to.equal(400);
+            expect(res.body.status).to.equal('error');
+
+          case 5:
+          case "end":
+            return _context17.stop();
+        }
+      }
+    }, _callee17);
   }))));
 });
 //# sourceMappingURL=request.test.js.map

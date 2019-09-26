@@ -47,6 +47,21 @@ class RequestService {
             throw error
         }
     }
+
+    static async modifyPartyRequest(request_id, status) {
+        try {
+            return await database.Request.update(
+                { status },
+                {
+                    where: {
+                        id: request_id,
+                    },
+                }
+            )
+        } catch (error) {
+            throw error
+        }
+    }
 }
 
 export default RequestService

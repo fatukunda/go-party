@@ -21,7 +21,8 @@ var createParty = _PartyController["default"].createParty,
     editParty = _PartyController["default"].editParty,
     deleteParty = _PartyController["default"].deleteParty;
 var sendPartyRequest = _RequestController["default"].sendPartyRequest,
-    getPartyRequests = _RequestController["default"].getPartyRequests;
+    getPartyRequests = _RequestController["default"].getPartyRequests,
+    modifyPartyRequest = _RequestController["default"].modifyPartyRequest;
 var router = (0, _express.Router)();
 router.post('/', _auth["default"], createParty);
 router.get('/createdby/:user_id', filterPartiesByUser);
@@ -30,6 +31,7 @@ router.patch('/:party_id', _auth["default"], editParty);
 router["delete"]('/:party_id', _auth["default"], deleteParty);
 router.post('/:party_id/requests', _auth["default"], sendPartyRequest);
 router.get('/:party_id/requests', _auth["default"], getPartyRequests);
+router.patch('/:party_id/requests/:request_id/:status', _auth["default"], modifyPartyRequest);
 var _default = router;
 exports["default"] = _default;
 //# sourceMappingURL=PartyRoutes.js.map

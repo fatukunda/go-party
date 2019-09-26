@@ -78,6 +78,35 @@ class RequestController {
             return util.send(res)
         }
     }
+
+    static async modifyPartyRequest(req, res) {
+        const { user, params } = req
+        const { party_id, request_id, status } = params
+
+        try {
+            const party = await PartyService.searchParty(party_id)
+            if (!party) {
+                util.setError(404, 'Party with that request does not exist.')
+                return util.send(res)
+            }
+            if (party.host_id !== user.id) {
+                util.setError(400, 'You cannot alter a request for a party you did not create.')
+                return util.send(res)
+            }
+            const request = await RequestService.findPartyRequest(request_id)
+            if (!request) {
+                util.setError(404, 'The request you are trying to alter does not exist.')
+                return util.send(res)
+            }
+            await RequestService.modifyPartyRequest(request.id, status)
+            util.setSuccess(200, 'Party request altered.')
+            return util.send(res)
+
+        } catch (error) {
+            util.setError(400, error.message)
+            return util.send(res)
+        }
+    }
 }
 
 export default RequestController
