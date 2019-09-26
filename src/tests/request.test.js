@@ -7,6 +7,7 @@ import app from '../app'
 import { populateUser, populateParty, validRequest, validUser, mochAsync, populateInitialParty } from './testData'
 
 const partyUrl = '/api/v1/parties'
+const usersUrl = '/api/v1/users'
 
 chai.use(chaiHttp)
 const { expect } = chai
@@ -130,6 +131,46 @@ describe('Testing the party requests endpoints', () => {
                 .request(app)
                 // The url expects an integer but a string is provided
                 .get(`${partyUrl}/invalidInput/requests`)
+                .set('Authorization', `Bearer ${token}`)
+                .send()
+            expect(res.status).to.equal(400)
+            expect(res.body.status).to.equal('error')
+        })
+    )
+
+    it(
+        'Should successfully withdraw a party request',
+        mochAsync(async () => {
+            let res = await chai
+                .request(app)
+                .delete(`${usersUrl}/me/requests/1`)
+                .set('Authorization', `Bearer ${token}`)
+                .send()
+            expect(res.status).to.equal(200)
+            expect(res.body.message).to.equal('Party request successfully withdrawn')
+        })
+    )
+
+    it(
+        'Should throw a 404 if a request does not exist.',
+        mochAsync(async () => {
+            let res = await chai
+                .request(app)
+                .delete(`${usersUrl}/me/requests/4`)
+                .set('Authorization', `Bearer ${token}`)
+                .send()
+            expect(res.status).to.equal(404)
+            expect(res.body.message).to.equal('That party request does not exist.')
+        })
+    )
+
+    it(
+        'Should throw a 400 when something goes wrong trying to withdraw a party request',
+        mochAsync(async () => {
+            let res = await chai
+                .request(app)
+                // The url expects an integer for request id but a string is provided
+                .delete(`${usersUrl}/me/requests/invalidrequestid`)
                 .set('Authorization', `Bearer ${token}`)
                 .send()
             expect(res.status).to.equal(400)

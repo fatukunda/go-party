@@ -50,10 +50,32 @@ class RequestController {
             }
             const requests = await RequestService.getPartyRequests(party.id)
             util.setSuccess(200, 'Party requests', requests)
-            util.send(res)
+            return util.send(res)
         } catch (error) {
             util.setError(400, error.message)
-            util.send(res)
+            return util.send(res)
+        }
+    }
+
+    static async withdrawPartyRequest(req, res) {
+        const user = req.user
+        const  { request_id }  = req.params
+        try {
+            const request = await RequestService.findPartyRequest(request_id)
+            if (!request) {
+                util.setError(404, 'That party request does not exist.')
+                return util.send(res)
+            }
+            if (request.guest_id !== user.id) {
+                util.setError(401, 'You can only withdraw your own requests.')
+                return util.send(res)
+            }
+            await request.destroy()
+            util.setSuccess(200, 'Party request successfully withdrawn')
+            return util.send(res)
+        } catch (error) {
+            util.setError(400, error.message)
+            return util.send(res)
         }
     }
 }

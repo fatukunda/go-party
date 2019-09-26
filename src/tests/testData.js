@@ -19,13 +19,6 @@ const testUser1 = {
     email: 'testuser@app.com',
 }
 
-const testUser2 = {
-    id: 3,
-    username: 'testuser2',
-    password: 'testuserpass2',
-    email: 'testuser2@app.com',
-}
-
 const testParty1 = {
     id: 2,
     title: 'Test party 1',
@@ -33,16 +26,6 @@ const testParty1 = {
     location: 'test location 1',
     party_date: '02.02.2020',
     party_type: 'house party 1',
-    host_id: testUser1.id,
-}
-
-const testParty2 = {
-    id: 3,
-    title: 'Test party 2',
-    description: 'This is a test party 2',
-    location: 'test location 2',
-    party_date: '02.02.2020',
-    party_type: 'house party 2',
     host_id: testUser1.id,
 }
 
