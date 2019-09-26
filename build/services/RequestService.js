@@ -183,6 +183,48 @@ function () {
 
       return findPartyRequest;
     }()
+  }, {
+    key: "modifyPartyRequest",
+    value: function () {
+      var _modifyPartyRequest = (0, _asyncToGenerator2["default"])(
+      /*#__PURE__*/
+      _regenerator["default"].mark(function _callee5(request_id, status) {
+        return _regenerator["default"].wrap(function _callee5$(_context5) {
+          while (1) {
+            switch (_context5.prev = _context5.next) {
+              case 0:
+                _context5.prev = 0;
+                _context5.next = 3;
+                return _models["default"].Request.update({
+                  status: status
+                }, {
+                  where: {
+                    id: request_id
+                  }
+                });
+
+              case 3:
+                return _context5.abrupt("return", _context5.sent);
+
+              case 6:
+                _context5.prev = 6;
+                _context5.t0 = _context5["catch"](0);
+                throw _context5.t0;
+
+              case 9:
+              case "end":
+                return _context5.stop();
+            }
+          }
+        }, _callee5, null, [[0, 6]]);
+      }));
+
+      function modifyPartyRequest(_x6, _x7) {
+        return _modifyPartyRequest.apply(this, arguments);
+      }
+
+      return modifyPartyRequest;
+    }()
   }]);
   return RequestService;
 }();
