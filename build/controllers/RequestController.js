@@ -159,15 +159,13 @@ function () {
               case 14:
                 requests = _context2.sent;
                 util.setSuccess(200, 'Party requests', requests);
-                util.send(res);
-                _context2.next = 23;
-                break;
+                return _context2.abrupt("return", util.send(res));
 
               case 19:
                 _context2.prev = 19;
                 _context2.t0 = _context2["catch"](2);
                 util.setError(400, _context2.t0.message);
-                util.send(res);
+                return _context2.abrupt("return", util.send(res));
 
               case 23:
               case "end":
@@ -182,6 +180,71 @@ function () {
       }
 
       return getPartyRequests;
+    }()
+  }, {
+    key: "withdrawPartyRequest",
+    value: function () {
+      var _withdrawPartyRequest = (0, _asyncToGenerator2["default"])(
+      /*#__PURE__*/
+      _regenerator["default"].mark(function _callee3(req, res) {
+        var user, request_id, request;
+        return _regenerator["default"].wrap(function _callee3$(_context3) {
+          while (1) {
+            switch (_context3.prev = _context3.next) {
+              case 0:
+                user = req.user;
+                request_id = req.params.request_id;
+                _context3.prev = 2;
+                _context3.next = 5;
+                return _RequestService["default"].findPartyRequest(request_id);
+
+              case 5:
+                request = _context3.sent;
+
+                if (request) {
+                  _context3.next = 9;
+                  break;
+                }
+
+                util.setError(404, 'That party request does not exist.');
+                return _context3.abrupt("return", util.send(res));
+
+              case 9:
+                if (!(request.guest_id !== user.id)) {
+                  _context3.next = 12;
+                  break;
+                }
+
+                util.setError(401, 'You can only withdraw your own requests.');
+                return _context3.abrupt("return", util.send(res));
+
+              case 12:
+                _context3.next = 14;
+                return request.destroy();
+
+              case 14:
+                util.setSuccess(200, 'Party request successfully withdrawn');
+                return _context3.abrupt("return", util.send(res));
+
+              case 18:
+                _context3.prev = 18;
+                _context3.t0 = _context3["catch"](2);
+                util.setError(400, _context3.t0.message);
+                return _context3.abrupt("return", util.send(res));
+
+              case 22:
+              case "end":
+                return _context3.stop();
+            }
+          }
+        }, _callee3, null, [[2, 18]]);
+      }));
+
+      function withdrawPartyRequest(_x5, _x6) {
+        return _withdrawPartyRequest.apply(this, arguments);
+      }
+
+      return withdrawPartyRequest;
     }()
   }]);
   return RequestController;

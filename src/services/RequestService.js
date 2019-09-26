@@ -26,15 +26,23 @@ class RequestService {
         try {
             return await database.Request.findAndCountAll({
                 where: {
-                    party_id
+                    party_id,
                 },
                 attributes: ['id', 'status'],
                 include: {
                     model: database.User,
                     as: 'requestor',
-                    attributes: ['id', 'username', 'email']
-                }
+                    attributes: ['id', 'username', 'email'],
+                },
             })
+        } catch (error) {
+            throw error
+        }
+    }
+
+    static async findPartyRequest(request_id) {
+        try {
+            return await database.Request.findByPk(request_id)
         } catch (error) {
             throw error
         }

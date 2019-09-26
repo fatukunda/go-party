@@ -1,11 +1,13 @@
 import { Router } from 'express'
 import passport from 'passport'
 import UserController from '../controllers/UserController'
+import RequestController from '../controllers/RequestController'
 import { multerUploads } from '../middleware/multer'
 import { cloudinaryConfig } from '../config/cloudinaryConfig'
 import auth from '../middleware/auth'
 
 const { addUser, uploadAvatar, findByCredentials, verifyAccount, editUserProfile, fetchUserProfile, loginFacebookUser } = UserController
+const { withdrawPartyRequest } = RequestController
 
 const router = Router()
 
@@ -24,5 +26,6 @@ router.get(
         failureRedirect: '/',
     })    
 )
+router.delete('/me/requests/:request_id', auth, withdrawPartyRequest)
 
 export default router

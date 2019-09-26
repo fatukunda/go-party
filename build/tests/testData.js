@@ -31,12 +31,6 @@ var testUser1 = {
   password: 'testuserpass1',
   email: 'testuser@app.com'
 };
-var testUser2 = {
-  id: 3,
-  username: 'testuser2',
-  password: 'testuserpass2',
-  email: 'testuser2@app.com'
-};
 var testParty1 = {
   id: 2,
   title: 'Test party 1',
@@ -44,15 +38,6 @@ var testParty1 = {
   location: 'test location 1',
   party_date: '02.02.2020',
   party_type: 'house party 1',
-  host_id: testUser1.id
-};
-var testParty2 = {
-  id: 3,
-  title: 'Test party 2',
-  description: 'This is a test party 2',
-  location: 'test location 2',
-  party_date: '02.02.2020',
-  party_type: 'house party 2',
   host_id: testUser1.id
 };
 var invalidDataUser = {
