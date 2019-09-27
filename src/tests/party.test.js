@@ -192,6 +192,46 @@ describe('Testing the party endpoints', () => {
             })
     })
 
+    it('should get party guests', done => {
+        chai
+            .request(app)
+            .get(`${partyUrl}/1/guests`)
+            .set('Authorization', `Bearer ${token}`)
+            .send()
+            .end((err, res) => {
+                expect(res.status).to.equal(200)
+                expect(res.body.message).to.equal('Party guests')
+                done()
+            })
+    })
+
+    it('should throw a 404 if a aparty does not exist', done => {
+        chai
+            .request(app)
+            .get(`${partyUrl}/4/guests`)
+            .set('Authorization', `Bearer ${token}`)
+            .send()
+            .end((err, res) => {
+                expect(res.status).to.equal(404)
+                expect(res.body.message).to.equal('A party with that id does not exist.')
+                done()
+            })
+    })
+
+    it('should throw a 400 if something goes wrong while fetching party guests', done => {
+        chai
+            .request(app)
+        // Route expects a number but a string is provided.
+            .get(`${partyUrl}/invalidinput/guests`)
+            .set('Authorization', `Bearer ${token}`)
+            .send()
+            .end((err, res) => {
+                expect(res.status).to.equal(400)
+                expect(res.body.status).to.equal('error')
+                done()
+            })
+    })
+
     it('Should delete a party', done => {
         chai
             .request(app)

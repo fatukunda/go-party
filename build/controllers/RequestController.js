@@ -21,6 +21,8 @@ var _RequestService = _interopRequireDefault(require("../services/RequestService
 
 var _PartyService = _interopRequireDefault(require("../services/PartyService"));
 
+var _UserService = _interopRequireDefault(require("../services/UserService"));
+
 var util = new _Utils["default"]();
 
 var RequestController =
@@ -252,7 +254,7 @@ function () {
       var _modifyPartyRequest = (0, _asyncToGenerator2["default"])(
       /*#__PURE__*/
       _regenerator["default"].mark(function _callee4(req, res) {
-        var user, params, party_id, request_id, status, party, request;
+        var user, params, party_id, request_id, status, party, request, guest;
         return _regenerator["default"].wrap(function _callee4$(_context4) {
           while (1) {
             switch (_context4.prev = _context4.next) {
@@ -300,24 +302,38 @@ function () {
 
               case 18:
                 _context4.next = 20;
-                return _RequestService["default"].modifyPartyRequest(request.id, status);
+                return _UserService["default"].findUser(request.guest_id);
 
               case 20:
+                guest = _context4.sent;
+                _context4.next = 23;
+                return _RequestService["default"].modifyPartyRequest(request.id, status);
+
+              case 23:
+                if (!(status === 'accepted')) {
+                  _context4.next = 26;
+                  break;
+                }
+
+                _context4.next = 26;
+                return party.addGuests(guest);
+
+              case 26:
                 util.setSuccess(200, 'Party request altered.');
                 return _context4.abrupt("return", util.send(res));
 
-              case 24:
-                _context4.prev = 24;
+              case 30:
+                _context4.prev = 30;
                 _context4.t0 = _context4["catch"](2);
                 util.setError(400, _context4.t0.message);
                 return _context4.abrupt("return", util.send(res));
 
-              case 28:
+              case 34:
               case "end":
                 return _context4.stop();
             }
           }
-        }, _callee4, null, [[2, 24]]);
+        }, _callee4, null, [[2, 30]]);
       }));
 
       function modifyPartyRequest(_x7, _x8) {

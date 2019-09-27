@@ -150,7 +150,7 @@ module.exports = function (sequelize, DataTypes) {
     var Party = _ref.Party;
     User.belongsToMany(Party, {
       as: 'attended_parties',
-      through: 'party_guests',
+      through: 'PartyGuests',
       foreignKey: 'guest_id'
     });
   };

@@ -64,7 +64,7 @@ var _default = function _default(sequelize, DataTypes) {
     });
     Party.belongsToMany(User, {
       as: 'guests',
-      through: 'party_guests',
+      through: 'PartyGuests',
       foreignKey: 'party_id'
     });
   };

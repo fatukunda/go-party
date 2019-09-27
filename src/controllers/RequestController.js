@@ -1,6 +1,7 @@
 import Util from '../utils/Utils'
 import RequestService from '../services/RequestService'
 import PartyService from '../services/PartyService'
+import UserService from '../services/UserService'
 const util = new Util()
 
 class RequestController {
@@ -59,7 +60,7 @@ class RequestController {
 
     static async withdrawPartyRequest(req, res) {
         const user = req.user
-        const  { request_id }  = req.params
+        const { request_id } = req.params
         try {
             const request = await RequestService.findPartyRequest(request_id)
             if (!request) {
@@ -98,10 +99,13 @@ class RequestController {
                 util.setError(404, 'The request you are trying to alter does not exist.')
                 return util.send(res)
             }
+            const guest = await UserService.findUser(request.guest_id)
             await RequestService.modifyPartyRequest(request.id, status)
+            if (status === 'accepted') {
+                await party.addGuests(guest)
+            }
             util.setSuccess(200, 'Party request altered.')
             return util.send(res)
-
         } catch (error) {
             util.setError(400, error.message)
             return util.send(res)

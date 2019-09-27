@@ -205,6 +205,20 @@ describe('Testing the party requests endpoints', () => {
         })
     )
 
+    it('should throw a 400 if a user tries to get guests to a party they did not create', done => {
+        const localToken = jwt.sign({ id: 2 }, process.env.JWT_KEY, { expiresIn: '1h' })
+        chai
+            .request(app)
+            .get(`${partyUrl}/1/guests`)
+            .set('Authorization', `Bearer ${localToken}`)
+            .send()
+            .end((err, res) => {
+                expect(res.status).to.equal(400)
+                expect(res.body.message).to.equal('You can only view requests for a party you created.')
+                done()
+            })
+    })
+
     it(
         'Should successfully withdraw a party request',
         mochAsync(async () => {

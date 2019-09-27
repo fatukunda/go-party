@@ -408,6 +408,19 @@ describe('Testing the party requests endpoints', function () {
       }
     }, _callee14);
   }))));
+  it('should throw a 400 if a user tries to get guests to a party they did not create', function (done) {
+    var localToken = _jsonwebtoken["default"].sign({
+      id: 2
+    }, process.env.JWT_KEY, {
+      expiresIn: '1h'
+    });
+
+    _chai["default"].request(_app["default"]).get("".concat(partyUrl, "/1/guests")).set('Authorization', "Bearer ".concat(localToken)).send().end(function (err, res) {
+      expect(res.status).to.equal(400);
+      expect(res.body.message).to.equal('You can only view requests for a party you created.');
+      done();
+    });
+  });
   it('Should successfully withdraw a party request', (0, _testData.mochAsync)(
   /*#__PURE__*/
   (0, _asyncToGenerator2["default"])(
