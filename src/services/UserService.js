@@ -45,6 +45,14 @@ class UserService {
             throw error
         }
     }
+
+    static async findUser(id) {
+        try {
+            return await database.User.findByPk(id)
+        } catch (error) {
+            throw error
+        }
+    }
 }
 
 export default UserService

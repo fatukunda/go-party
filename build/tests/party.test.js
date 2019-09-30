@@ -144,6 +144,28 @@ describe('Testing the party endpoints', function () {
       done();
     });
   });
+  it('should get party guests', function (done) {
+    _chai["default"].request(_app["default"]).get("".concat(partyUrl, "/1/guests")).set('Authorization', "Bearer ".concat(token)).send().end(function (err, res) {
+      expect(res.status).to.equal(200);
+      expect(res.body.message).to.equal('Party guests');
+      done();
+    });
+  });
+  it('should throw a 404 if a aparty does not exist', function (done) {
+    _chai["default"].request(_app["default"]).get("".concat(partyUrl, "/4/guests")).set('Authorization', "Bearer ".concat(token)).send().end(function (err, res) {
+      expect(res.status).to.equal(404);
+      expect(res.body.message).to.equal('A party with that id does not exist.');
+      done();
+    });
+  });
+  it('should throw a 400 if something goes wrong while fetching party guests', function (done) {
+    _chai["default"].request(_app["default"]) // Route expects a number but a string is provided.
+    .get("".concat(partyUrl, "/invalidinput/guests")).set('Authorization', "Bearer ".concat(token)).send().end(function (err, res) {
+      expect(res.status).to.equal(400);
+      expect(res.body.status).to.equal('error');
+      done();
+    });
+  });
   it('Should delete a party', function (done) {
     _chai["default"].request(_app["default"])["delete"]("".concat(partyUrl, "/1")).set('Authorization', "Bearer ".concat(token)).send().end(function (err, res) {
       expect(res.status).to.equal(200);

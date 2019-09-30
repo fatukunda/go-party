@@ -316,6 +316,72 @@ function () {
 
       return deleteParty;
     }()
+  }, {
+    key: "getPartyGuests",
+    value: function () {
+      var _getPartyGuests = (0, _asyncToGenerator2["default"])(
+      /*#__PURE__*/
+      _regenerator["default"].mark(function _callee6(req, res) {
+        var user, party_id, party, guests;
+        return _regenerator["default"].wrap(function _callee6$(_context6) {
+          while (1) {
+            switch (_context6.prev = _context6.next) {
+              case 0:
+                user = req.user;
+                party_id = req.params.party_id;
+                _context6.prev = 2;
+                _context6.next = 5;
+                return _PartyService["default"].searchParty(party_id);
+
+              case 5:
+                party = _context6.sent;
+
+                if (party) {
+                  _context6.next = 9;
+                  break;
+                }
+
+                util.setError(404, 'A party with that id does not exist.');
+                return _context6.abrupt("return", util.send(res));
+
+              case 9:
+                if (!(party.host_id !== user.id)) {
+                  _context6.next = 12;
+                  break;
+                }
+
+                util.setError(400, 'You can only view requests for a party you created.');
+                return _context6.abrupt("return", util.send(res));
+
+              case 12:
+                _context6.next = 14;
+                return party.getGuests();
+
+              case 14:
+                guests = _context6.sent;
+                util.setSuccess(200, 'Party guests', guests);
+                return _context6.abrupt("return", util.send(res));
+
+              case 19:
+                _context6.prev = 19;
+                _context6.t0 = _context6["catch"](2);
+                util.setError(400, _context6.t0.message);
+                return _context6.abrupt("return", util.send(res));
+
+              case 23:
+              case "end":
+                return _context6.stop();
+            }
+          }
+        }, _callee6, null, [[2, 19]]);
+      }));
+
+      function getPartyGuests(_x11, _x12) {
+        return _getPartyGuests.apply(this, arguments);
+      }
+
+      return getPartyGuests;
+    }()
   }]);
   return PartyController;
 }();

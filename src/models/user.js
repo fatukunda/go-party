@@ -74,7 +74,7 @@ module.exports = (sequelize, DataTypes) => {
         {}
     )
     User.associate = ({ Party }) => {
-        User.belongsToMany(Party, { as: 'attended_parties', through: 'party_guests', foreignKey: 'guest_id' })
+        User.belongsToMany(Party, { as: 'attended_parties', through: 'PartyGuests', foreignKey: 'guest_id' })
     }
     User.beforeCreate(async user => {
         try {

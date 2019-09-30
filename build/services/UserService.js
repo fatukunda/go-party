@@ -222,6 +222,42 @@ function () {
 
       return findByCredentials;
     }()
+  }, {
+    key: "findUser",
+    value: function () {
+      var _findUser = (0, _asyncToGenerator2["default"])(
+      /*#__PURE__*/
+      _regenerator["default"].mark(function _callee5(id) {
+        return _regenerator["default"].wrap(function _callee5$(_context5) {
+          while (1) {
+            switch (_context5.prev = _context5.next) {
+              case 0:
+                _context5.prev = 0;
+                _context5.next = 3;
+                return _models["default"].User.findByPk(id);
+
+              case 3:
+                return _context5.abrupt("return", _context5.sent);
+
+              case 6:
+                _context5.prev = 6;
+                _context5.t0 = _context5["catch"](0);
+                throw _context5.t0;
+
+              case 9:
+              case "end":
+                return _context5.stop();
+            }
+          }
+        }, _callee5, null, [[0, 6]]);
+      }));
+
+      function findUser(_x7) {
+        return _findUser.apply(this, arguments);
+      }
+
+      return findUser;
+    }()
   }]);
   return UserService;
 }();
