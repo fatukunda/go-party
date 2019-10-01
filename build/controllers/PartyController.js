@@ -382,6 +382,50 @@ function () {
 
       return getPartyGuests;
     }()
+  }, {
+    key: "searchPartiesByLocation",
+    value: function () {
+      var _searchPartiesByLocation = (0, _asyncToGenerator2["default"])(
+      /*#__PURE__*/
+      _regenerator["default"].mark(function _callee7(req, res) {
+        var _req$query, location, page, limit, offset, parties;
+
+        return _regenerator["default"].wrap(function _callee7$(_context7) {
+          while (1) {
+            switch (_context7.prev = _context7.next) {
+              case 0:
+                _req$query = req.query, location = _req$query.location, page = _req$query.page;
+                limit = parseInt(req.query.limit) || 10;
+                offset = (parseInt(page) - 1) * limit || 0;
+                _context7.prev = 3;
+                _context7.next = 6;
+                return _PartyService["default"].searchPartiesByLocation(location, limit, offset);
+
+              case 6:
+                parties = _context7.sent;
+                util.setSuccess(200, 'Parties by location', parties);
+                return _context7.abrupt("return", util.send(res));
+
+              case 11:
+                _context7.prev = 11;
+                _context7.t0 = _context7["catch"](3);
+                util.setError(400, _context7.t0.message);
+                return _context7.abrupt("return", util.send(res));
+
+              case 15:
+              case "end":
+                return _context7.stop();
+            }
+          }
+        }, _callee7, null, [[3, 11]]);
+      }));
+
+      function searchPartiesByLocation(_x13, _x14) {
+        return _searchPartiesByLocation.apply(this, arguments);
+      }
+
+      return searchPartiesByLocation;
+    }()
   }]);
   return PartyController;
 }();

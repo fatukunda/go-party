@@ -122,6 +122,20 @@ class PartyController {
             return util.send(res)
         }
     }
+
+    static async searchPartiesByLocation(req, res) {
+        const { location, page } = req.query
+        const limit = parseInt(req.query.limit) || 10
+        const offset = (parseInt(page) - 1) * limit || 0
+        try {
+            const parties = await PartyService.searchPartiesByLocation(location, limit, offset)
+            util.setSuccess(200, 'Parties by location', parties)
+            return util.send(res)
+        } catch (error) {
+            util.setError(400, error.message)
+            return util.send(res)
+        }
+    }
 }
 
 export default PartyController

@@ -85,6 +85,13 @@ describe('Testing the party endpoints', function () {
       done();
     });
   });
+  it('Should search a party by location', function (done) {
+    _chai["default"].request(_app["default"]).get("".concat(partyUrl, "/search?location=test location 1")).send().end(function (err, res) {
+      expect(res.status).to.equal(200);
+      expect(res.body.message).to.equal('Parties by location');
+      done();
+    });
+  });
   it('Should edit a party', function (done) {
     var editData = {
       description: 'edited description',

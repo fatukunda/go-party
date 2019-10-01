@@ -7,6 +7,8 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports["default"] = void 0;
 
+var _defineProperty2 = _interopRequireDefault(require("@babel/runtime/helpers/defineProperty"));
+
 var _regenerator = _interopRequireDefault(require("@babel/runtime/regenerator"));
 
 var _asyncToGenerator2 = _interopRequireDefault(require("@babel/runtime/helpers/asyncToGenerator"));
@@ -16,6 +18,8 @@ var _classCallCheck2 = _interopRequireDefault(require("@babel/runtime/helpers/cl
 var _createClass2 = _interopRequireDefault(require("@babel/runtime/helpers/createClass"));
 
 var _models = _interopRequireDefault(require("../models"));
+
+var _sequelize = require("sequelize");
 
 var PartyService =
 /*#__PURE__*/
@@ -228,6 +232,48 @@ function () {
       }
 
       return searchParty;
+    }()
+  }, {
+    key: "searchPartiesByLocation",
+    value: function () {
+      var _searchPartiesByLocation = (0, _asyncToGenerator2["default"])(
+      /*#__PURE__*/
+      _regenerator["default"].mark(function _callee6(location, limit, offset) {
+        return _regenerator["default"].wrap(function _callee6$(_context6) {
+          while (1) {
+            switch (_context6.prev = _context6.next) {
+              case 0:
+                _context6.prev = 0;
+                _context6.next = 3;
+                return _models["default"].Party.findAndCountAll({
+                  where: {
+                    location: (0, _defineProperty2["default"])({}, _sequelize.Op.like, "%".concat(location, "%"))
+                  },
+                  offset: offset,
+                  limit: limit
+                });
+
+              case 3:
+                return _context6.abrupt("return", _context6.sent);
+
+              case 6:
+                _context6.prev = 6;
+                _context6.t0 = _context6["catch"](0);
+                throw _context6.t0;
+
+              case 9:
+              case "end":
+                return _context6.stop();
+            }
+          }
+        }, _callee6, null, [[0, 6]]);
+      }));
+
+      function searchPartiesByLocation(_x9, _x10, _x11) {
+        return _searchPartiesByLocation.apply(this, arguments);
+      }
+
+      return searchPartiesByLocation;
     }()
   }]);
   return PartyService;

@@ -113,6 +113,18 @@ describe('Testing the party endpoints', () => {
             })
     })
 
+    it('Should search a party by location', done => {
+        chai
+            .request(app)
+            .get(`${partyUrl}/search?location=test location 1`)
+            .send()
+            .end((err, res) => {
+                expect(res.status).to.equal(200)
+                expect(res.body.message).to.equal('Parties by location')
+                done()
+            })
+    })
+
     it('Should edit a party', done => {
         const editData = {
             description: 'edited description',

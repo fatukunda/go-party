@@ -20,13 +20,15 @@ var createParty = _PartyController["default"].createParty,
     viewSingleParty = _PartyController["default"].viewSingleParty,
     editParty = _PartyController["default"].editParty,
     deleteParty = _PartyController["default"].deleteParty,
-    getPartyGuests = _PartyController["default"].getPartyGuests;
+    getPartyGuests = _PartyController["default"].getPartyGuests,
+    searchPartiesByLocation = _PartyController["default"].searchPartiesByLocation;
 var sendPartyRequest = _RequestController["default"].sendPartyRequest,
     getPartyRequests = _RequestController["default"].getPartyRequests,
     modifyPartyRequest = _RequestController["default"].modifyPartyRequest;
 var router = (0, _express.Router)();
 router.post('/', _auth["default"], createParty);
 router.get('/createdby/:user_id', filterPartiesByUser);
+router.get('/search', searchPartiesByLocation);
 router.get('/:party_id', viewSingleParty);
 router.patch('/:party_id', _auth["default"], editParty);
 router["delete"]('/:party_id', _auth["default"], deleteParty);

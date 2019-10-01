@@ -1,4 +1,5 @@
 import database from '../models'
+import { Op } from 'sequelize'
 
 class PartyService {
     static async createParty(newParty) {
@@ -91,6 +92,20 @@ class PartyService {
     static async searchParty(party_id) {
         try {
             return await database.Party.findByPk(party_id)
+        } catch (error) {
+            throw error
+        }
+    }
+
+    static async searchPartiesByLocation(location, limit, offset) {
+        try {
+            return await database.Party.findAndCountAll({
+                where: {
+                    location: { [Op.like]: `%${location}%` },
+                },
+                offset,
+                limit,
+            })
         } catch (error) {
             throw error
         }
